@@ -1,6 +1,6 @@
 ---
 title: 'W251 Project Milestone #1'
-author: "Priya Bala"
+author: "Priya Bala and Mihir Pandya"
 date: "2023-09-25"
 output: pdf_document
 ---
@@ -19,7 +19,7 @@ output: pdf_document
 
     -   Team's preferred communication method - Text and email
 
-    -   Team's preferred meeting times and frequency - We will meet once a week on zoom to go over project details, Time and day might vary with schedule.
+    -   Team's preferred meeting times and frequency - We will meet once a week on zoom to go over project details, time and day might vary with schedule.
 
     -   Team's preferred method for tracking progress - Creating action items and deadlines after each meeting.
 
