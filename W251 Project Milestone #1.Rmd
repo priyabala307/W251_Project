@@ -19,9 +19,9 @@ output: pdf_document
 
     -   Team's preferred communication method - Text first and then email
 
-    -   Team's preferred meeting times and frequency - We will meet once a week on zoom to go over project details, time and day might vary with schedule.
+    -   Team's preferred meeting times and frequency - We will meet once a week on zoom to go over project details, time and day might vary with schedule. But for now Wednesday early afternoon works best for the team. 
 
-    -   Team's preferred method for tracking progress - Creating action items and deadlines after each meeting.
+    -   Team's preferred method for tracking progress - Creating action items and deadlines after each meeting. As of now, the team does not have any non-academic conflicts that would prevent the scheduled meetings. 
 
     -   Point person for contacting course facilitators with questions - Priya Bala (pbala307\@berkeley.edu)
 
@@ -46,10 +46,14 @@ output: pdf_document
 -   Discuss meeting tempo: \"checking in\" at the beginning of meetings versus \"just sticking to business\".
 
 #### Roles
-- How is your team going to keep track of progress? We will collaborate on agendas and take relevant minutes from the meetings.
--  Who will be taking minutes - We will collaborate, creating agendas - Both of us will work on the agenda, and contacting the course facilitators with questions - Priya Bala (pbala307@berkeley.edu)?
+- How is your team going to keep track of progress? 
+    We will collaborate on agendas and take relevant minutes from the meetings.
+-  Who will be taking minutes?
+    We will collaborate in taking down the minutes of each meeting.
+-  Who will be creating agendas 
+    Both of us will work on the agenda, and contacting the course facilitators with questions - Priya Bala (pbala307@berkeley.edu) will be the primary contact for the project. 
 
--   We encourage you to discuss potential dates and times to meet with a course facilitator during Weeks 3-5. Decide on the best date and time for all. Mondays - 11-4 pm, Wednesday - 1 - 3 pm
+-   We encourage you to discuss potential dates and times to meet with a course facilitator during Weeks 3-5. Decide on the best date and time for all. Mondays - 11-4 pm, Wednesday 1 - 3 pm works best to meet with the course facilitators. 
 
 #### Conflict Management
 
