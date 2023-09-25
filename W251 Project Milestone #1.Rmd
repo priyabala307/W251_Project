@@ -17,7 +17,7 @@ output: pdf_document
 
 -   Roles and responsibilities
 
-    -   Team's preferred communication method - Text and email
+    -   Team's preferred communication method - Text first and then email
 
     -   Team's preferred meeting times and frequency - We will meet once a week on zoom to go over project details, time and day might vary with schedule.
 
