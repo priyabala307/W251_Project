@@ -1,0 +1,107 @@
+---
+title: "Milestone#2 PBHLTH W251"
+author: "Priya Bala"
+date: "2023-10-02"
+output: html_document
+---
+
+# Milestone #2
+
+-   **Description of dataset**
+
+    -   **What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)**
+
+        -   **Ans:** There are 3 datasets to describe scenario 1. Scenario 1 describes a simulated Flu outbreak and vaccine uptake in California. This scenario contains sociodemographic information such as: age, gender, race/ethnicity, county information and morbidity, disease severity, and county and regional vaccination from a simulated CA flu season. Since we are CDPH employees in this scenario, we can assume that the dataset is provided by the CDPH to run analyses to understand resource allocation, vaccine effectiveness, etc.
+
+            -   The first dataset - sim_flu_CA.csv - contains weekly data about flu cases and case severity by sociodemographic categories (age, gender, race/ethnicity) and geographic categories (county) for various California counties (except LA).
+
+            -   The second dataset - sim_flu_LACounty.csv - contains population information in LA county.
+
+            -   The third dataset - ca_vax_rates_quarter.csv - contains quarterly COVID vaccination rates by county and age.
+
+    -   **How does the dataset relate to the group problem statement and question?**
+
+        -   **Ans:** The datasets has sociodemographic and geographic information along with flue vaccination and quarterly COVID vaccination rates. By utilizing these datasets, we can assess whether higher COVID vaccination rates are associated with higher flu vaccination rates, and if there is any effect on flu morbidity or severity. These datasets also allows for a sociodemographic analysis to determine whether certain population groups are more or less likely to get vaccinated, which is critical for tailoring public health interventions to encourage flu vaccinations. In summary, the dataset provides the necessary data points to analyze and answer the group's problem statement and question by examining the relationships between COVID and flu vaccination rates, flu morbidity/severity, and sociodemographic factors.
+
+-   **Import statements for all datasets**
+
+    ```{r}
+    # We are importing the 3 datasets for scenario 1 using the reader package and read_csv() 
+    # command. 
+    library(readr)
+    ca_vax <- read_csv("./ca_vax_rates_quarter.csv")
+    sim_flu_CA <- read_csv("./sim_flu_CA.csv")
+    sim_flu_LA <- read_csv("./sim_flu_LACounty.csv")
+    head(ca_vax)
+    head(sim_flu_CA)
+    head(sim_flu_LA)
+
+
+    ```
+
+    ```{r}
+    View(ca_vax)
+    View(sim_flu_CA)
+    View(sim_flu_LA)
+    ```
+
+    ```{r}
+    # Cleaning the column names for the datasets. 
+    #library(tidyverse)
+
+    ca_vax <- rename_with(ca_vax,
+                            ~ tolower(
+                              gsub(" ",
+                                   "_",
+                                   .x,
+                                   fixed = TRUE)
+                            ))
+
+    sim_flu_CA <- rename_with(sim_flu_CA,
+                            ~ tolower(
+                              gsub(" ",
+                                   "_",
+                                   .x,
+                                   fixed = TRUE)
+                            ))
+
+    sim_flu_LA <- rename_with(sim_flu_LA,
+                            ~ tolower(
+                              gsub(" ",
+                                   "_",
+                                   .x,
+                                   fixed = TRUE)
+                            ))
+
+    head(ca_vax)
+    head(sim_flu_CA)
+    head(sim_flu_LA)
+    ```
+
+    -   Use appropriate import function and package based on the type of file
+
+        -   **Ans:** The above R chunk shows the readr package that is used to import all the csv files for scenario 1.
+
+    -   Utilize function arguments to control relevant components (i.e. change column types, column names, missing values, etc.)
+
+    -   Document the import process
+
+    -   Clean up column names (recommend using snake case, which is lower case text with underscores between words)
+
+        -   Ans: We have used rename_with() command to make all the column names with a lower case and underscores.
+
+-   **Identify data types for 5+ data elements/columns/variables**
+
+    -   Identify 5+ data elements required for your specified scenario. If \<5 elements are required to complete the analysis, please choose additional variables of interest in the data set to explore in this milestone.
+
+    -   Utilize functions or resources in RStudio to determine the types of each data element (i.e. character, numeric, factor)
+
+    -   Identify the desired type/format for each variable---will you need to convert any columns to numeric or another type? 
+
+-   **Provide a basic description of the 5+ data elements**
+
+    -   Numeric: mean, median, range
+
+    -   Character:  unique values/categories
+
+    -   Or any other descriptives that will be useful to the analysis
