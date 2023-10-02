@@ -4,3 +4,77 @@ author: "Priya Bala & Mihir Pandya"
 date: "2023-10-01"
 output: html_document
 ---
+
+# Milestone #2
+
+-   **Description of dataset**
+
+    -   **What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)**
+
+        -   Ans: There are 3 datasets to describe scenario 1. Scenario 1 describes a simulated Flu outbreak and vaccine uptake in California. This scenario contains sociodemographic information such as: age, gender, race/ethnicity, county information and morbidity, disease severity, and county and regional vaccination from a simulated CA flu season. Since we are CDPH employees in this scenario, we can assume that the dataset is provided by the CDPH to run analyses to understand resource allocation, vaccine effectiveness, etc.
+
+            -   The first dataset - sim_flu_CA.csv - contains weekly data about flu cases and case severity by sociodemographic categories (age, gender, race/ethnicity) and geographic categories (county) for various California counties (except LA).
+
+            -   The second dataset - sim_flu_LACounty.csv - contains population information in LA county.
+
+            -   The third dataset - ca_vax_rates_quarter.csv - contains quarterly COVID vaccination rates by county and age.
+
+    -   **How does the dataset relate to the group problem statement and question?**
+
+        -   **Ans:** The datasets has sociodemographic and geographic information along with flue vaccination and quarterly COVID vaccination rates. By utilizing these datasets, we can assess whether higher COVID vaccination rates are associated with higher flu vaccination rates, and if there is any effect on flu morbidity or severity. These datasets also allows for a sociodemographic analysis to determine whether certain population groups are more or less likely to get vaccinated, which is critical for tailoring public health interventions to encourage flu vaccinations. In summary, the dataset provides the necessary data points to analyze and answer the group's problem statement and question by examining the relationships between COVID and flu vaccination rates, flu morbidity/severity, and sociodemographic factors.
+
+-   **Import statements for all datasets**
+
+    -   **NOTE: Please use datasets available in the [PHW251 Project Data github repo](https://github.com/PHW290/phw251_projectdata)**[Links to an external site.](https://github.com/PHW290/phw251_projectdata)(this is important to make sure everyone is using the same datasets)
+
+    -   Use appropriate import function and package based on the type of file
+
+    -   Utilize function arguments to control relevant components (i.e. change column types, column names, missing values, etc.)
+
+    -   Document the import process
+
+    -   Clean up column names (recommend using snake case, which is lower case text with underscores between words)
+
+-   **Identify data types for 5+ data elements/columns/variables**
+
+    -   Identify 5+ data elements required for your specified scenario. If \<5 elements are required to complete the analysis, please choose additional variables of interest in the data set to explore in this milestone.
+
+    -   Utilize functions or resources in RStudio to determine the types of each data element (i.e. character, numeric, factor)
+
+    -   Identify the desired type/format for each variable---will you need to convert any columns to numeric or another type? 
+
+-   **Provide a basic description of the 5+ data elements**
+
+    -   Numeric: mean, median, range
+
+    -   Character:  unique values/categories
+
+    -   Or any other descriptives that will be useful to the analysis
+
+<!-- -->
+
+-   <div>
+
+    -   **Describe cleaning that each data source may need**
+
+    </div>
+
+<!-- -->
+
+-   <div>
+
+    -   <div>
+
+        -   NOTE: There is no requirement for any data cleaning in this milestone, but there may be cleaning you can do when you import your data! Please list out the anticipated data cleaning needed. 
+
+        -   Examples:
+
+            -   Data elements that need to be converted to a different type
+
+            -   Data elements that need cleaning or re-categorization
+
+            -   Data elements that may be used for future joins (i.e. state, county)
+
+        </div>
+
+    </div>
