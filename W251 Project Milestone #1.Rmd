@@ -5,13 +5,13 @@ date: "2023-09-25"
 output: pdf_document
 ---
 
-#### **Please push to GitHub an html document or a PDF (knitted/rendered from an Rmd or Qmd) with the following information  -** 
+#### **Please push to GitHub an html document or a PDF (knitted/rendered from an Rmd or Qmd) with the following information  -**
 
 -   **Project option selection** - Flu Outbreak (simulated) and Vaccine uptake in California - Scenario 1
 
 -   Create git repository
 
-    -   Share a link to your group\'s git repository
+    -   Share a link to your group's git repository
 
     -   <https://github.com/priyabala307/W251_Project.git>
 
@@ -43,13 +43,13 @@ output: pdf_document
 
 -   Discuss future non-academic commitments that might affect members' availability.
 
--   Discuss meeting tempo: \"checking in\" at the beginning of meetings versus \"just sticking to business\".
+-   Discuss meeting tempo: "checking in" at the beginning of meetings versus "just sticking to business".
 
 #### Roles
 
 -   How is your team going to keep track of progress? We will collaborate on agendas and take relevant minutes from the meetings.
 
--    Who will be taking minutes - We will collaborate, creating agendas - Both of us will work on the agenda, and contacting the course facilitators with questions - Priya Bala (pbala307\@berkeley.edu)?
+-   Who will be taking minutes - We will collaborate, creating agendas - Both of us will work on the agenda, and contacting the course facilitators with questions - Priya Bala (pbala307\@berkeley.edu)?
 
 -   We encourage you to discuss potential dates and times to meet with a course facilitator during Weeks 3-5. Decide on the best date and time for all. **Mondays - 11-4 pm, Wednesday - 1 - 3 pm**
 
