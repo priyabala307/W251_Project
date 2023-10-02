@@ -1,6 +1,6 @@
 ---
 title: "Milestone#2 PBHLTH W251"
-author: "Priya Bala"
+author: "Priya Bala and Mihir Pandya "
 date: "2023-10-02"
 output: html_document
 ---
