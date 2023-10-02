@@ -40,14 +40,8 @@ output: html_document
     ```
 
     ```{r}
-    View(ca_vax)
-    View(sim_flu_CA)
-    View(sim_flu_LA)
-    ```
-
-    ```{r}
     # Cleaning the column names for the datasets. 
-    #library(tidyverse)
+    library(tidyverse)
 
     ca_vax <- rename_with(ca_vax,
                             ~ tolower(
@@ -84,24 +78,135 @@ output: html_document
 
     -   Utilize function arguments to control relevant components (i.e. change column types, column names, missing values, etc.)
 
+        -   Ans: The dt_report variable in the sim_flu_LA dataset only has missing values. Thus this column can be removed from the analysis, but we are still keeping it in our dataset to ensure smoother merging of the 3 datasets. We will remove it after after merging all the three datasets, we will also confirm with the teaching team that the missing values were intended in the dataset.
+
     -   Document the import process
 
     -   Clean up column names (recommend using snake case, which is lower case text with underscores between words)
 
-        -   Ans: We have used rename_with() command to make all the column names with a lower case and underscores.
+        -   **Ans:** We have used rename_with() command to make all the column names with a lower case and underscores.
 
 -   **Identify data types for 5+ data elements/columns/variables**
 
-    -   Identify 5+ data elements required for your specified scenario. If \<5 elements are required to complete the analysis, please choose additional variables of interest in the data set to explore in this milestone.
+    ```{r}
+    # For ca_vax dataset. 
+
+    # One of the variables that are needed for the analysis is the county_name. The output of
+    # the below line shows that the type of county_name is a character variable. Length
+    # describes the number of observatons in the county_name column. 
+    length(ca_vax$county_name)
+    typeof(ca_vax$county_name)
+    class(ca_vax$county_name)
+
+    # One of the variables that are needed for the analysis is the demographic_value. The output # of the below line shows that the type of demographic_value is a character variable. Length
+    # describes the number of observatons in the county_name column. This variable is important
+    # to understand what demographic element - age, race, etc. that we are working with. In the # upcoming milestones we have to subset these categories and maybe convert the dataset to a # wide format for further analyses. 
+    length(ca_vax$demographic_value)
+    typeof(ca_vax$demographic_value)
+    class(ca_vax$demographic_value)
+
+    # One of the variables that are needed for the analysis is the estimated_population. The 
+    # output of the below line shows that the type of estimated_population is an integer aka 
+    # double variable. Length describes the number of observatons in the estimated_population 
+    # column. This variable is important to understand what the total population of county is. 
+    # This is necessary to calculate the vaccination rate and also the spread of the flu within # that county.
+    length(ca_vax$estimated_population)
+    typeof(ca_vax$estimated_population)
+    class(ca_vax$estimated_population)
+
+    # For the sim_flu_CA dataset.
+    # One of the variables that is important to understand the severity and morbidity of the flu # in different counties in California is the new_severe variable in the sim_flu_CA dataset. # The output of the below lines show that the new_severe variable is a double (integer) aka # numerical variable. Also the length of the new_severe variable shows the number of 
+    # observations. 
+    length(sim_flu_CA$new_severe)
+    typeof(sim_flu_CA$new_severe)
+    class(sim_flu_CA$new_severe)
+
+    # One of the variables that is important to understand the severity and morbidity of the flu # in different counties in California is the current_infected variable in the sim_flu_CA 
+    # dataset. The output of the below lines show that the current_infected variable is a double
+    # (integer) aka numerical variable. Also the length of the current_infected variable shows
+    # the number of observations. Using the current_infected variable we can understand the
+    # severity of the spread of the flu within CA. 
+    length(sim_flu_CA$current_infected)
+    typeof(sim_flu_CA$current_infected)
+    class(sim_flu_CA$current_infected)
+
+    # From the sim_flu_LA dataset. the dt_dx variable is in a character format, but it
+    # represents dates thus in our further cleaning we have to change the format for the dt_dx
+    # variables to a Date format. This is just one of the dates that were chosen out of the 3
+    # dataset, if the other date variables like dt_admin (in the ca_vax dataset) are also in
+    # character variable we will convert them to a date format. This variable along with other
+    # date variables is important to understand the time of spread of the flu and also the
+    # changes in vaccination rates for covid and the the flu during different quarters. 
+    length(sim_flu_LA$dt_dx)
+    typeof(sim_flu_LA$dt_dx)
+    class(sim_flu_LA$dt_dx)
+    ```
+
+    -   
 
     -   Utilize functions or resources in RStudio to determine the types of each data element (i.e. character, numeric, factor)
 
     -   Identify the desired type/format for each variable---will you need to convert any columns to numeric or another type? 
 
+        -   Ans: For the date variables (dt_dx, dt_admin, etc.) we have to convert them to a Date format as they are currently in a character format. The demographic_value in the ca_vax dataset has the race/ethnicity age categories, etc. in the same column, in our data cleaning we might have to make the values into two new variables or come up with a uniform way to analyse the data.
+
 -   **Provide a basic description of the 5+ data elements**
 
     -   Numeric: mean, median, range
 
-    -   Character:  unique values/categories
+        ```{r}
+        # For some of the numeric variables that are present in the dataset. I have used the individual mean(), median(), and range() commands and also the summary() command to provide a basic decription of the numerical data.  
+        mean(sim_flu_CA$new_severe)
+        median(sim_flu_CA$new_severe)
+        range(sim_flu_CA$new_severe)
 
-    -   Or any other descriptives that will be useful to the analysis
+        summary(sim_flu_CA$current_infected)
+
+        summary(ca_vax$estimated_population)
+
+        summary(ca_vax$cumulative_fully_vaccinated)
+
+        summary(sim_flu_LA$recovered_new)
+
+
+        ```
+
+    -   Character: 
+
+        -   The **demographic_variable** in the ca_vax dataset is a character variable that has unique values of both age categories and racial/ethnicity details. We might have to create a new variable based on this variable as having multiple descriptions of both age and race/ethnicity might be confusing.
+
+        -   The **race_ethnicity** **variable** in the sim_flu_CA dataset is in numeric format but it describes race and ethnicity, we have to recode this variable to convert it to a character format and also map what each number in the race_ethnicity variable represents.
+
+```{=html}
+<!-- -->
+```
+-   **Describe cleaning that each data source may need**
+
+    -   Ans: Some of the character variables need to be changed to a date format - the date variables mentioned above.
+
+    -   The race/ethnicity variables from the 3 datasets needs to be recoded and renamed so that the merging of the 3 datasets can occur smoothly.
+
+    -   The demographic_variable needs to re-categorized into two new variables.
+
+    -   The county name variable can be used to merge all the three datasets but the LA dataset can be appended with the sim_flu_CA first (after some renaming of the columns), before merging the final datasets.
+
+```{=html}
+<!-- -->
+```
+-   <div>
+
+    -   <div>
+
+        -   NOTE: There is no requirement for any data cleaning in this milestone, but there may be cleaning you can do when you import your data! Please list out the anticipated data cleaning needed. 
+
+        -   Examples:
+
+            -   Data elements that need to be converted to a different type
+
+            -   Data elements that need cleaning or re-categorization
+
+            -   Data elements that may be used for future joins (i.e. state, county)
+
+        </div>
+
+    </div>
