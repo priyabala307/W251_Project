@@ -1,6 +1,10 @@
 ---
 title: "Milestone#2 PBHLTH W251"
+<<<<<<< HEAD
 author: "Priya Bala"
+=======
+author: "Priya Bala and Mihir Pandya"
+>>>>>>> ada5e40446e41aa79250ad368593d29c4fcd6f8d
 date: "2023-10-02"
 output: html_document
 ---
@@ -11,7 +15,11 @@ output: html_document
 
     -   **What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)**
 
+<<<<<<< HEAD
         -   **Ans:** There are 3 datasets to describe scenario 1. Scenario 1 describes a simulated Flu outbreak and vaccine uptake in California. This scenario contains sociodemographic information such as: age, gender, race/ethnicity, county information and morbidity, disease severity, and county and regional vaccination from a simulated CA flu season. Since we are CDPH employees in this scenario, we can assume that the dataset is provided by the CDPH to run analyses to understand resource allocation, vaccine effectiveness, etc.
+=======
+        -   **Ans:** There are three datasets to describe scenario 1. Scenario 1 describes a simulated flu outbreak and vaccine uptake in California. This scenario contains sociodemographic information such as: age, gender, race/ethnicity, county information and morbidity, disease severity, and county and regional vaccination from a simulated CA flu season. Since we are California Department of Public Health (CDPH) employees in this scenario, we can assume that the dataset is provided by the CDPH to run analyses and understand resource allocation, vaccine effectiveness, etc.
+>>>>>>> ada5e40446e41aa79250ad368593d29c4fcd6f8d
 
             -   The first dataset - sim_flu_CA.csv - contains weekly data about flu cases and case severity by sociodemographic categories (age, gender, race/ethnicity) and geographic categories (county) for various California counties (except LA).
 
@@ -21,13 +29,21 @@ output: html_document
 
     -   **How does the dataset relate to the group problem statement and question?**
 
+<<<<<<< HEAD
         -   **Ans:** The datasets has sociodemographic and geographic information along with flue vaccination and quarterly COVID vaccination rates. By utilizing these datasets, we can assess whether higher COVID vaccination rates are associated with higher flu vaccination rates, and if there is any effect on flu morbidity or severity. These datasets also allows for a sociodemographic analysis to determine whether certain population groups are more or less likely to get vaccinated, which is critical for tailoring public health interventions to encourage flu vaccinations. In summary, the dataset provides the necessary data points to analyze and answer the group's problem statement and question by examining the relationships between COVID and flu vaccination rates, flu morbidity/severity, and sociodemographic factors.
+=======
+        -   **Ans:** The datasets have sociodemographic and geographic information along with flu vaccination and quarterly COVID-19 vaccination rates. By utilizing these datasets, we can assess whether higher COVID-19 vaccination rates are associated with higher flu vaccination rates, and if there is any effect on flu morbidity or severity. These datasets also allow for a sociodemographic analysis to determine whether certain population groups are more or less likely to get vaccinated, a critical step for tailoring public health interventions to encourage flu vaccinations. In summary, the datasets provide the necessary data points to analyze and answer the group's problem statement and question by examining the relationships between COVID-19 and flu vaccination rates, flu morbidity/severity, and sociodemographic factors.
+>>>>>>> ada5e40446e41aa79250ad368593d29c4fcd6f8d
 
 -   **Import statements for all datasets**
 
     ```{r}
     # We are importing the 3 datasets for scenario 1 using the reader package and read_csv() 
+<<<<<<< HEAD
     # command. 
+=======
+    # command.
+>>>>>>> ada5e40446e41aa79250ad368593d29c4fcd6f8d
     library(readr)
     ca_vax <- read_csv("./ca_vax_rates_quarter.csv")
     sim_flu_CA <- read_csv("./sim_flu_CA.csv")
@@ -35,6 +51,7 @@ output: html_document
     head(ca_vax)
     head(sim_flu_CA)
     head(sim_flu_LA)
+<<<<<<< HEAD
 
 
     ```
@@ -48,6 +65,13 @@ output: html_document
     ```{r}
     # Cleaning the column names for the datasets. 
     #library(tidyverse)
+=======
+    ```
+
+    ```{r}
+    # This is cleaning the column names for the datasets.
+    library(tidyverse)
+>>>>>>> ada5e40446e41aa79250ad368593d29c4fcd6f8d
 
     ca_vax <- rename_with(ca_vax,
                             ~ tolower(
@@ -80,24 +104,94 @@ output: html_document
 
     -   Use appropriate import function and package based on the type of file
 
+<<<<<<< HEAD
         -   **Ans:** The above R chunk shows the readr package that is used to import all the csv files for scenario 1.
 
     -   Utilize function arguments to control relevant components (i.e. change column types, column names, missing values, etc.)
 
+=======
+        -   **Ans:** The above R chunk shows the readr package that is used to import all the CSV files for scenario 1.
+
+    -   Utilize function arguments to control relevant components (i.e. change column types, column names, missing values, etc.)
+
+        -   Ans: The dt_report variable in the sim_flu_LA dataset only has missing values. Thus this column can be removed from the analysis, but we are still keeping it in our dataset to ensure smoother merging of the three datasets. We will remove it after merging all the three datasets, and we will also confirm with the teaching team that the missing values were intended in the dataset.
+
+>>>>>>> ada5e40446e41aa79250ad368593d29c4fcd6f8d
     -   Document the import process
 
     -   Clean up column names (recommend using snake case, which is lower case text with underscores between words)
 
+<<<<<<< HEAD
         -   Ans: We have used rename_with() command to make all the column names with a lower case and underscores.
 
 -   **Identify data types for 5+ data elements/columns/variables**
 
     -   Identify 5+ data elements required for your specified scenario. If \<5 elements are required to complete the analysis, please choose additional variables of interest in the data set to explore in this milestone.
+=======
+        -   **Ans:** We have used the rename_with() command to make all the column names with lower case and underscores.
+
+-   **Identify data types for 5+ data elements/columns/variables**
+
+    ```{r}
+    # This is for the ca_vax dataset.
+
+    # One of the variables that is needed for analysis is county_name. The output of
+    # the below line shows that the type of county_name is a character variable. Length
+    # describes the number of observations in the county_name column.
+    length(ca_vax$county_name)
+    typeof(ca_vax$county_name)
+    class(ca_vax$county_name)
+
+    # One of the variables that is needed for the analysis is the demographic_value. The output # of the below line shows that the type of demographic_value is a character variable. Length
+    # describes the number of observations in the county_name column. This variable is important
+    # to understand what demographic element like age, race, and others we are working with. In the # upcoming milestones we have to subset these categories and maybe convert the dataset to a # wide format for further analyses.
+    length(ca_vax$demographic_value)
+    typeof(ca_vax$demographic_value)
+    class(ca_vax$demographic_value)
+
+    # One of the variables that is needed for the analysis is the estimated_population. The 
+    # output of the below line shows that the type of estimated_population is an integer or 
+    # double variable. Length describes the number of observations in the estimated_population 
+    # column. This variable is important to understand what the total population of county is. 
+    # This is necessary to calculate the vaccination rate and also the spread of flu within # that county.
+    length(ca_vax$estimated_population)
+    typeof(ca_vax$estimated_population)
+    class(ca_vax$estimated_population)
+
+    # For the sim_flu_CA dataset,
+    # one of the variables that is important to understand the severity and morbidity of the flu # in different counties in California is the new_severe variable in the sim_flu_CA dataset. # The output of the below lines show that the new_severe variable is a double (integer) or # numerical variable. The length of the new_severe variable also shows the number of 
+    # observations.
+    length(sim_flu_CA$new_severe)
+    typeof(sim_flu_CA$new_severe)
+    class(sim_flu_CA$new_severe)
+
+    # One of the variables that is important to understand the severity and morbidity of the flu # in different counties in California is the current_infected variable in the sim_flu_CA 
+    # dataset. The output of the below lines show that the current_infected variable is a double
+    # (integer) or numerical variable. Also the length of the current_infected variable shows
+    # the number of observations. Using the current_infected variable we can understand the
+    # severity of the spread of the flu within CA.
+    length(sim_flu_CA$current_infected)
+    typeof(sim_flu_CA$current_infected)
+    class(sim_flu_CA$current_infected)
+
+    # From the sim_flu_LA dataset, the dt_dx variable is in a character format, but it
+    # represents dates thus in our further cleaning we have to change the format for the dt_dx
+    # variable to a date format. This is just one of the dates that were chosen out of the three
+    # datasets, if the other date variables like dt_admin (in the ca_vax dataset) are also in
+    # character variable we will convert them to a date format. This variable along with other
+    # date variables are important to understand the time of flu spread and also the
+    # changes in vaccination rates for COVID-19 and flu during different quarters.
+    length(sim_flu_LA$dt_dx)
+    typeof(sim_flu_LA$dt_dx)
+    class(sim_flu_LA$dt_dx)
+    ```
+>>>>>>> ada5e40446e41aa79250ad368593d29c4fcd6f8d
 
     -   Utilize functions or resources in RStudio to determine the types of each data element (i.e. character, numeric, factor)
 
     -   Identify the desired type/format for each variable---will you need to convert any columns to numeric or another type? 
 
+<<<<<<< HEAD
 -   **Provide a basic description of the 5+ data elements**
 
     -   Numeric: mean, median, range
@@ -105,3 +199,55 @@ output: html_document
     -   Character:  unique values/categories
 
     -   Or any other descriptives that will be useful to the analysis
+=======
+        -   Ans: For the date variables (dt_dx, dt_admin, etc.), we have to convert them to a date format as they are currently in a character format. The demographic_value in the ca_vax dataset has the race/ethnicity age categories and more. In the same column, with our data cleaning we might have to make the values into two new variables or come up with a uniform way to analyze the data.
+
+-   **Provide a basic description of the 5+ data elements**
+
+    -   Numeric: mean, median, range
+    
+    -   Character:  unique values/categories
+    
+    -   Ans: For some of the numeric variables that are present in the dataset, we have used the individual mean(), median(), and range() functions and also the summary() functions to provide a basic description of the numerical data. For understanding the characters, the typeof() and class() functions have been used.
+
+```{r}
+        mean(sim_flu_CA$new_severe)
+        median(sim_flu_CA$new_severe)
+        range(sim_flu_CA$new_severe)
+
+        summary(sim_flu_CA$current_infected)
+        typeof(sim_flu_CA$current_infected)
+        class(sim_flu_CA$current_infected)
+
+        summary(ca_vax$estimated_population)
+        typeof(ca_vax$estimated_population)
+        class(ca_vax$estimated_population)
+
+        summary(ca_vax$cumulative_fully_vaccinated)
+        typeof(ca_vax$cumulative_fully_vaccinated)
+        class(ca_vax$cumulative_fully_vaccinated)
+
+        summary(sim_flu_LA$recovered_new)
+        typeof(sim_flu_LA$recovered_new)
+        class(sim_flu_LA$recovered_new)
+```
+
+    -   Character: 
+
+        -   The **demographic_variable** in the ca_vax dataset is a character variable that has unique values of both age categories and racial/ethnicity details. We might have to create a new variable based on this variable as having multiple descriptions of both age and race/ethnicity might be confusing.
+
+        -   The **race_ethnicity** **variable** in the sim_flu_CA dataset is in numeric format but it describes race and ethnicity, so we have to recode this variable to convert it to a character format and also map what each number in the race_ethnicity variable represents.
+
+```{=html}
+<!-- -->
+```
+-   **Describe cleaning that each data source may need**
+
+    -   Ans: Some of the character variables need to be changed to a date format, consistent with the date variables mentioned above.
+
+    -   The race/ethnicity variables from the three datasets need to be recoded and renamed so that the merging of the three datasets can occur smoothly.
+
+    -   The demographic_variable needs to categorized again into two new variables.
+
+    -   The county name variable can be used to merge all the three datasets but the sim_flu_LA dataset can be appended with the sim_flu_CA dataset first (after some renaming of the columns), before merging the final datasets.
+>>>>>>> ada5e40446e41aa79250ad368593d29c4fcd6f8d
