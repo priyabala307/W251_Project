@@ -4,3 +4,86 @@ author: "Priya Bala and Mihir Pandya"
 date: "2023-11-01"
 output: html_document
 ---
+
+#### **Data Cleaning: Milestone 3**
+
+The sim_flu_CA.csv file and sim_flu_LACounty.csv file together represent simulated morbidity for the entire state of California. While it\'s certainly possible for data from different sources to adhere to a format standard, one of the challenges of working with secondary data is that it often does not work out that way. Therefore to prepare each dataset (milestone #3) so that they can be combined into one, whole state, dataset you will need to do the following:
+
+-   Flu morbidity datasets (from CA and LA County)
+
+    -   Recode column names, values, or formats that are in discordant (dates, etc)
+
+    -   Combine morbidity datasets into a single dataset
+
+    -   Select demographic and geographic strata (s) of interest
+
+    -   Aggregate the data into a new dataframe to  include only one row per strata of interest
+
+-   Vaccination dataset 
+
+    -   Recode values to be consistent with morbidity datasets so they can be joined
+
+    -   Select vaccination time frame that fits best with morbidity data and subset appropriately
+
+    -   Select demographic strata(s) of interest
+
+    -   Create a vaccination rate metric and summarize to include only one row per strata of interest
+
+### Clean each dataset and include descriptive statistics for relevant data elements
+
+Please turn in an html document created from an Rmd or Qmd with the following components:
+
+-   Subset rows or columns, as needed
+
+-   Create new variables needed for analysis (minimum 2)
+
+    -   New variables should be created based on existing columns; for example
+
+        -   Calculating a rate
+
+        -   Combining character strings
+
+        -   Aggregation
+
+-   Clean variables needed for analysis (minimum 2)
+
+    -   Examples
+
+        -   Recode invalid values
+
+        -   Handle missing data
+
+        -   Recode categories
+
+-   Data re-structured as needed (aggregated/summarized and/or pivoted)
+
+-   Data dictionary based on clean dataset (minimum 4 data elements), including:
+
+    -   Variable name
+
+    -   Data type
+
+    -   Description
+
+-   One or more tables with descriptive statistics for 4 data elements
+
+-   Html output that is professionally prepared for presentation
+
+    -   Only the necessary information is outputted (you should suppress, for example, entire data frame outputs)
+
+    -   Use of headers and sub headers to create an organized document
+
+```{r}
+# Importing the CA dataset and the LA dataset. 
+library(readr)
+sim_CA <- read_csv("./sim_flu_CA.csv")
+View(sim_CA)
+
+sim_LA <- read_csv("./sim_flu_LACounty_pop.csv")
+View(sim_LA)
+
+# Importing the vaccination dataset 
+
+ca_vax <- read_csv("./ca_vax_rates_quarter.csv")
+View(ca_vax)
+```
