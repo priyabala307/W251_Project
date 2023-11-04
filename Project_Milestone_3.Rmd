@@ -130,14 +130,13 @@ head(sim_LA)
 We are first going to append sim_CA and sim_LA.
 
 ```{r}
-View(sim_CA)
+
+sim_LA <- sim_LA %>% rename(new_recovered = recovered_new, current_infected = infected_current, new_infections = dx_new, count_susceptible = susceptible, cumulative_infected = infected_cumulative, cumulative_recovered = recovered_cumulative, new_severe = severe_new, cumulative_severe = severe_cumulative, time_int = dt_dx, age_cat = age_category, race_ethnicity = race_eth, report_date = dt_report)
+
+# Create county_name column for the LA dataset. 
+sim_LA <- sim_LA %>% mutate(county_name = "Los Angeles County")
 View(sim_LA)
 
 colnames(sim_CA)
 colnames(sim_LA)
-
-sim_LA <- sim_LA %>% rename(new_recovered = recovered_new, current_infected = infected_current, )
-
-# Create county_name column for the LA dataset. 
-
 ```
