@@ -74,7 +74,7 @@ Please turn in an html document created from an Rmd or Qmd with the following co
     -   Use of headers and sub headers to create an organized document
 
 ```{r}
-# Adding all the packages that is necessary for the cleaning and importing done in this milestone. 
+# Adding all the packages that is necessary for the cleaning and importing done in this milestone. We are using readr, tidyverse, dplyr. 
 library(readr)
 library(tidyverse)
 library(dplyr)
