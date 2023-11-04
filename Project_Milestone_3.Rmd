@@ -139,12 +139,4 @@ colnames(sim_LA)
 sim_LA <- sim_LA %>% rename(new_recovered = recovered_new, current_infected = infected_current, )
 
 # Create county_name column for the LA dataset. 
-
-<<<<<<< HEAD
-# sample test message again v2
-
-# third test message
-=======
-
->>>>>>> bb3b448899195de5db4eef934c13523ff33fc757
 ```
