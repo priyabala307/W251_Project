@@ -197,6 +197,10 @@ sim_CA_LA_age_subset <- sim_CA_LA[sim_CA_LA$county_name == "Alameda County", ]
 
 sim_CA_LA_age_subset <- sim_CA_LA_age_subset[,-c(11,14)]
 View(sim_CA_LA_age_subset)
+
+str(sim_CA_LA_age_subset)
+
+
 ```
 
 ```{r}
@@ -205,19 +209,43 @@ View(sim_CA_LA_age_subset)
 aggregated_df <- sim_CA_LA_age_subset %>%
   group_by(county_name, age_cat) %>%
   summarise(
-    new_infections = sum(new_infections),
-    new_recovered = sum(new_recovered),
-    count_susceptible = last(count_susceptible),
-    current_infected = last(current_infected),
-    cumulative_infected = last(cumulative_infected),
-    cumulative_recovered = last(cumulative_recovered),
-    new_severe = sum(new_severe),
-    cumulative_severe = last(cumulative_severe),
-    population = last(population)
+    mean_new_infections = mean(new_infections, na.rm = TRUE),
+    mean_new_recovered = mean(new_recovered, na.rm = TRUE),
+    count_susceptible = last(count_susceptible, na.rm = TRUE),
+    current_infected = last(current_infected, na.rm = TRUE),
+    cumulative_infected = last(cumulative_infected, na.rm = TRUE),
+    cumulative_recovered = last(cumulative_recovered, na.rm = TRUE),
+    mean_new_severe = mean(new_severe, na.rm = TRUE),
+    cumulative_severe = last(cumulative_severe, na.rm = TRUE),
+    population = last(population, na.rm = TRUE)
   )
 
 # Print the aggregated dataframe
 print(aggregated_df)
 
 
+```
+
+```{r}
+str(sim_CA_LA_age_subset)
+```
+
+```{r}
+
+
+aggregated_df <- sim_CA_LA_age_subset %>%
+  drop_na(count_susceptible, current_infected, cumulative_infected, cumulative_recovered, cumulative_severe, population) %>%
+  group_by(county_name, age_cat) %>%
+  summarise(
+    mean_new_infections = mean(new_infections),
+    mean_new_recovered = mean(new_recovered),
+    count_susceptible = last(count_susceptible),
+    mean_current_infected = mean(current_infected),
+    cumulative_infected = last(cumulative_infected),
+    cumulative_recovered = last(cumulative_recovered),
+    new_severe = sum(new_severe),
+    cumulative_severe = last(cumulative_severe),
+    population = last(population)
+  )
+print(aggregated_df)
 ```
