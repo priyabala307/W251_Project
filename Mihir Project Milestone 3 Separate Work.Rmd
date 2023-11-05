@@ -6,13 +6,15 @@ date: "2023-11-04"
 
 Vaccination dataset 
 
-    -   Recode values to be consistent with morbidity datasets so they can be joined
+```         
+-   Recode values to be consistent with morbidity datasets so they can be joined
 
-    -   Select vaccination time frame that fits best with morbidity data and subset appropriately
+-   Select vaccination time frame that fits best with morbidity data and subset appropriately
 
-    -   Select demographic strata(s) of interest
+-   Select demographic strata(s) of interest
 
-    -   Create a vaccination rate metric and summarize to include only one row per strata of interest
+-   Create a vaccination rate metric and summarize to include only one row per strata of interest
+```
 
 ```{r}
 # Adding all the packages that is necessary for the cleaning and importing done in this milestone, using readr, tidyverse, dplyr
