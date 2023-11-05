@@ -60,4 +60,7 @@ ca_demographics <- subset(ca_vax_time_frame, demographic_category == "Age Group"
 ca_metric <- mutate(
   ca_demographics,
   "vaccination_rate" = (ca_demographics$cumulative_fully_vaccinated / ca_demographics$estimated_population) * 100)
+
+ca_metric <- ca_metric %>%
+  rename("age_cat" = "demographic_value")
 ```
