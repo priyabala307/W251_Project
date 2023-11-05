@@ -11,11 +11,11 @@ The sim_flu_CA.csv file and sim_flu_LACounty.csv file together represent simulat
 
 -   Flu morbidity datasets (from CA and LA County)
 
-    -   Recode column names, values, or formats that are in discordant (dates, etc)
+    -   Recode column names, values, or formats that are in discordant (dates, etc) - DONE
 
-    -   Combine morbidity datasets into a single dataset
+    -   Combine morbidity datasets into a single dataset - DONE
 
-    -   Select demographic and geographic strata (s) of interest
+    -   Select demographic and geographic strata (s) of interest - DONE
 
     -   Aggregate the data into a new dataframe to  include only one row per strata of interest
 
@@ -183,4 +183,41 @@ colnames(sim_CA_subset)
 # Appending both the datasets and combining sim_LA and sim_CA_subset. 
 sim_CA_LA <- rbind(sim_CA_subset, sim_LA)
 head(sim_CA_LA)
+```
+
+We are choosing the age category as a sociodemographic category and we are focusing on Alameda county.
+
+```{r}
+# Subsetting the combined dataset to only include age and alameda county. 
+
+# First subsetting the dataset to only have Alameda county observations. 
+sim_CA_LA_age_subset <- sim_CA_LA[sim_CA_LA$county_name == "Alameda County", ]
+
+# Since we are focusing only on age as a sociodemographic characteristic, we can remove race_eth, sex columns. 
+
+sim_CA_LA_age_subset <- sim_CA_LA_age_subset[,-c(11,14)]
+View(sim_CA_LA_age_subset)
+```
+
+```{r}
+
+# Aggregate the data by 'county_name' and 'age_cat' and calculate the sum for each column
+aggregated_df <- sim_CA_LA_age_subset %>%
+  group_by(county_name, age_cat) %>%
+  summarise(
+    new_infections = sum(new_infections),
+    new_recovered = sum(new_recovered),
+    count_susceptible = last(count_susceptible),
+    current_infected = last(current_infected),
+    cumulative_infected = last(cumulative_infected),
+    cumulative_recovered = last(cumulative_recovered),
+    new_severe = sum(new_severe),
+    cumulative_severe = last(cumulative_severe),
+    population = last(population)
+  )
+
+# Print the aggregated dataframe
+print(aggregated_df)
+
+
 ```
