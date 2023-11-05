@@ -226,3 +226,41 @@ aggregated_df <- sim_CA_LA_age_subset %>%
   )
 print(aggregated_df)
 ```
+
+Cleaning the California Vaccination dataset
+
+```{r}
+# Recoding the column names to match morbidity datasets to ready them to join
+ca_vax_renamed <- rename_with(ca_vax,
+                      ~ tolower(
+                        gsub(" ",
+                             "_",
+                             .x,
+                             fixed = TRUE)
+                      ))
+```
+
+```{r}
+# Selecting a time frame that matches the morbidity dataset and subset
+
+ca_vax_time_frame <- subset(ca_vax_renamed, quarter == "2023-04-01")
+```
+
+```{r}
+
+# Selecting demographic strata of interest
+
+ca_demographics <- subset(ca_vax_time_frame, demographic_category == "Age Group")
+```
+
+```{r}
+
+# Creating vaccination rate metric
+
+ca_metric <- mutate(
+  ca_demographics,
+  "vaccination_rate" = (ca_demographics$cumulative_fully_vaccinated / ca_demographics$estimated_population) * 100)
+
+ca_metric <- ca_metric %>%
+  rename("age_cat" = "demographic_value")
+```
