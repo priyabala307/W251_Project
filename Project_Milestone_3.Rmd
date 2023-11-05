@@ -204,29 +204,6 @@ str(sim_CA_LA_age_subset)
 ```
 
 ```{r}
-
-# Aggregate the data by 'county_name' and 'age_cat' and calculate the sum for each column
-aggregated_df <- sim_CA_LA_age_subset %>%
-  group_by(county_name, age_cat) %>%
-  summarise(
-    mean_new_infections = mean(new_infections, na.rm = TRUE),
-    mean_new_recovered = mean(new_recovered, na.rm = TRUE),
-    count_susceptible = last(count_susceptible, na.rm = TRUE),
-    current_infected = last(current_infected, na.rm = TRUE),
-    cumulative_infected = last(cumulative_infected, na.rm = TRUE),
-    cumulative_recovered = last(cumulative_recovered, na.rm = TRUE),
-    mean_new_severe = mean(new_severe, na.rm = TRUE),
-    cumulative_severe = last(cumulative_severe, na.rm = TRUE),
-    population = last(population, na.rm = TRUE)
-  )
-
-# Print the aggregated dataframe
-print(aggregated_df)
-
-
-```
-
-```{r}
 str(sim_CA_LA_age_subset)
 ```
 
