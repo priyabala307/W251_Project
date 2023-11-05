@@ -131,7 +131,7 @@ We are first going to append sim_CA and sim_LA.
 
 ```{r}
 
-sim_LA <- sim_LA %>% rename(new_recovered = recovered_new, current_infected = infected_current, new_infections = dx_new, count_susceptible = susceptible, cumulative_infected = infected_cumulative, cumulative_recovered = recovered_cumulative, new_severe = severe_new, cumulative_severe = severe_cumulative, dt_diagnosis = dt_dx, age_cat = age_category, race_ethnicity = race_eth, report_date = dt_report)
+sim_LA <- sim_LA %>% rename(new_recovered = recovered_new, current_infected = infected_current, new_infections = dx_new, count_susceptible = susceptible, cumulative_infected = infected_cumulative, cumulative_recovered = recovered_cumulative, new_severe = severe_new, cumulative_severe = severe_cumulative, dt_diagnosis = dt_dx, age_cat = age_category, report_date = dt_report)
 
 sim_CA <- sim_CA %>% rename(unique_id = time_int)
 
@@ -149,9 +149,38 @@ Now that the column have been renamed to create a consistent dataset, we are adj
 # For the LA dataset 
 sim_LA$dt_diagnosis <- as.Date(sim_LA$dt_diagnosis, format = "%d%b%Y")
 
-View(sim_LA)
-
 # Converting race_ethnicity using case_when 
 
+sim_CA <- sim_CA %>% 
+  mutate(race_eth = case_when(
+    race_ethnicity == 1 ~ "American Indian or Alaska Native",
+    race_ethnicity == 2 ~ "Asian",
+    race_ethnicity == 3 ~ "Black or African American",
+    race_ethnicity == 4 ~ "Latino",
+    race_ethnicity == 5 ~ "Native Hawaiian or Other Pacific Islander",
+    race_ethnicity == 6 ~ "Multiracial",
+    race_ethnicity == 7 ~ "Other/Unknown"
+    
+  ))
 
+
+View(sim_LA)
+View(sim_CA)
+```
+
+```{r}
+# This chunk is combining both datasets to one dataset. 
+
+# Removing the columns in the sim_CA dataset that are not present in the sim_LA dataset to combine both the datasets. 
+
+sim_CA_subset <- sim_CA[,-c(2,9,10,15,16)]
+
+# Reordering the columns 
+sim_LA <- sim_LA[, names(sim_CA_subset)]
+colnames(sim_LA)
+colnames(sim_CA_subset)
+
+# Appending both the datasets and combining sim_LA and sim_CA_subset. 
+sim_CA_LA <- rbind(sim_CA_subset, sim_LA)
+head(sim_CA_LA)
 ```
