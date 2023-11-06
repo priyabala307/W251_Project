@@ -11,23 +11,23 @@ The sim_flu_CA.csv file and sim_flu_LACounty.csv file together represent simulat
 
 -   Flu morbidity datasets (from CA and LA County)
 
-    -   Recode column names, values, or formats that are in discordant (dates, etc) - DONE
+    -   Recode column names, values, or formats that are in discordant (dates, etc)
 
-    -   Combine morbidity datasets into a single dataset - DONE
+    -   Combine morbidity datasets into a single dataset
 
-    -   Select demographic and geographic strata (s) of interest - DONE
+    -   Select demographic and geographic strata (s) of interest
 
-    -   Aggregate the data into a new dataframe to  include only one row per strata of interest - DONE
+    -   Aggregate the data into a new dataframe to  include only one row per strata of interest
 
 -   Vaccination dataset 
 
-    -   Recode values to be consistent with morbidity datasets so they can be joined - DONE
+    -   Recode values to be consistent with morbidity datasets so they can be joined
 
-    -   Select vaccination time frame that fits best with morbidity data and subset appropriately - DONE
+    -   Select vaccination time frame that fits best with morbidity data and subset appropriately
 
-    -   Select demographic strata(s) of interest - DONE
+    -   Select demographic strata(s) of interest
 
-    -   Create a vaccination rate metric and summarize to include only one row per strata of interest - DONE
+    -   Create a vaccination rate metric and summarize to include only one row per strata of interest
 
 ### Clean each dataset and include descriptive statistics for relevant data elements
 
@@ -369,12 +369,12 @@ merged_final_alameda <- merged_final_alameda[,c(2,1,3:21)]
 print(merged_final_alameda)
 ```
 
-Creating a descriptive table from the final merged dataset.
+Creating a descriptive table from the final merged dataset
 
 ```{r}
-# Assuming 'merged_final_alameda' is your dataset
+# Assuming "merged_final_alameda" is the dataset
 
-# Define the columns for which you want to compute the descriptive statistics
+# Defining the columns wanted to compute the descriptive statistics
 columns <- c(
   "total_partial_vaccinated",
   "cumulative_fully_vaccinated",
@@ -387,27 +387,51 @@ columns <- c(
   "cumulative_up_to_date_vax"
 )
 
-# Create an empty data frame
+# Creating an empty data frame
 result_table <- data.frame(
   Measure = c("Min", "1st Qu", "Median", "Mean", "3rd Qu", "Max", "Standard Deviation")
 )
 
-# Loop through each column
+# Looping through each column
 for (col in columns) {
   # Compute summary statistics
   summary_stats <- summary(merged_final_alameda[[col]])
   sd_value <- sd(merged_final_alameda[[col]])
 
-  # Add the results to the data frame
+  # Adding the results to the data frame
   result_table[[col]] <- c(summary_stats[1], summary_stats[2], summary_stats[3], mean(merged_final_alameda[[col]]), summary_stats[5], summary_stats[6], sd_value)
 }
 
 # Print the resulting table
 print(result_table)
-
 ```
 
 ```{r}
+
 kable(result_table, format = "markdown", align = "c", booktabs = TRUE) %>%
   kable_styling(latex_options = c("striped", "hold_position"), full_width = FALSE)
 ```
+
+Data dictionary (sample):
+
+1. vaccination_rate - a numeric describing the cumulative number of people
+fully vaccinated over the estimated total population, times 100
+
+2. mean_new_infections - a numeric describing the average number of new cases
+after monitoring started (akin to incidence)
+
+3. mean_new_recovered - a numeric describing the average number of recovered patients
+after monitoring started (akin to incidence)
+
+4. cumulative_infected - a numeric describing the total number of cases,
+including before monitoring started (akin to prevalence)
+
+5. cumulative_recovered - a numeric describing the total number of recovered patients,
+including before monitoring started (akin to prevalence)
+
+6. estimated population - a numeric describing the estimated total population
+of the county of interest
+
+7. quarter - a numeric in the form of a date describing the quarter (three months
+starting on the date listed) for which the data was collected in the county of
+interest
