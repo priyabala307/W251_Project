@@ -268,7 +268,7 @@ ca_metric <- ca_metric %>%
 ```
 
 ```{r}
-<<<<<<< HEAD
+
 colnames(ca_metric)
 View(ca_metric)
 ```
@@ -278,7 +278,7 @@ View(ca_metric)
 
 merged_final <- merge(sim_CA_LA_age_subset, ca_metric, by = "county_name")
 View(merged_final)
-=======
+
 # Remaining modifications to enable merge
 
 ca_vax_county <- subset(ca_metric, county_name == "Alameda")
@@ -290,5 +290,5 @@ ca_vax_county$age_cat = case_when(
     ca_vax_county$age_cat == "18-49" ~ "18-49",
     ca_vax_county$age_cat == "50-64" ~ "50-64",
     ca_vax_county$age_cat == "65+" ~ "65+")
->>>>>>> 97dd1c4626b39e532a87d1d272657e50c1f6a56f
+
 ```
