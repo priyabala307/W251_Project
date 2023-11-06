@@ -272,5 +272,11 @@ ca_metric <- ca_metric %>%
 
 ca_vax_county <- subset(ca_metric, county_name == "Alameda")
 
-# ca_vax_final <- needs to be completed with correct age ranges
+ca_vax_county$age_cat = case_when(
+    ca_vax_county$age_cat == "Under 5" ~ "0-17",
+    ca_vax_county$age_cat == "5-11" ~ "0-17",
+    ca_vax_county$age_cat == "12-17" ~ "0-17",
+    ca_vax_county$age_cat == "18-49" ~ "18-49",
+    ca_vax_county$age_cat == "50-64" ~ "50-64",
+    ca_vax_county$age_cat == "65+" ~ "65+")
 ```
