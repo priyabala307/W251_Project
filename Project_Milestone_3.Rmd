@@ -27,7 +27,7 @@ The sim_flu_CA.csv file and sim_flu_LACounty.csv file together represent simulat
 
     -   Select demographic strata(s) of interest - DONE
 
-    -   Create a vaccination rate metric and summarize to include only one row per strata of interest
+    -   Create a vaccination rate metric and summarize to include only one row per strata of interest - DONE
 
 ### Clean each dataset and include descriptive statistics for relevant data elements
 
@@ -80,6 +80,8 @@ Please turn in an html document created from an Rmd or Qmd with the following co
 library(readr)
 library(tidyverse)
 library(dplyr)
+library(knitr)
+library(kableExtra)
 ```
 
 ```{r}
@@ -202,11 +204,6 @@ sim_CA_LA_age_subset <- sim_CA_LA[sim_CA_LA$county_name == "Alameda County", ]
 
 sim_CA_LA_age_subset <- sim_CA_LA_age_subset[,-c(11,14)]
 head(sim_CA_LA_age_subset)
-
-str(sim_CA_LA_age_subset)
-```
-
-```{r}
 
 str(sim_CA_LA_age_subset)
 ```
@@ -370,4 +367,47 @@ print(merged_final_alameda)
 merged_final_alameda <- merged_final_alameda[,c(2,1,3:21)]
 
 print(merged_final_alameda)
+```
+
+Creating a descriptive table from the final merged dataset.
+
+```{r}
+# Assuming 'merged_final_alameda' is your dataset
+
+# Define the columns for which you want to compute the descriptive statistics
+columns <- c(
+  "total_partial_vaccinated",
+  "cumulative_fully_vaccinated",
+  "vaccination_rate",
+  "cumulative_unvaccinated",
+  "cumulative_infected",
+  "cumulative_recovered",
+  "population",
+  "cumulative_at_least_one_dose",
+  "cumulative_up_to_date_vax"
+)
+
+# Create an empty data frame
+result_table <- data.frame(
+  Measure = c("Min", "1st Qu", "Median", "Mean", "3rd Qu", "Max", "Standard Deviation")
+)
+
+# Loop through each column
+for (col in columns) {
+  # Compute summary statistics
+  summary_stats <- summary(merged_final_alameda[[col]])
+  sd_value <- sd(merged_final_alameda[[col]])
+
+  # Add the results to the data frame
+  result_table[[col]] <- c(summary_stats[1], summary_stats[2], summary_stats[3], mean(merged_final_alameda[[col]]), summary_stats[5], summary_stats[6], sd_value)
+}
+
+# Print the resulting table
+print(result_table)
+
+```
+
+```{r}
+kable(result_table, format = "markdown", align = "c", booktabs = TRUE) %>%
+  kable_styling(latex_options = c("striped", "hold_position"), full_width = FALSE)
 ```
