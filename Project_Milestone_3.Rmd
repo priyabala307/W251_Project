@@ -1,7 +1,7 @@
 ---
 title: "PBHLTH W251 Project Milestone 3"
 author: "Priya Bala and Mihir Pandya"
-date: "2023-11-01"
+date: "2023-11-06"
 output: html_document
 ---
 
@@ -74,14 +74,16 @@ Please turn in an html document created from an Rmd or Qmd with the following co
     -   Use of headers and sub headers to create an organized document
 
 ```{r}
-# Adding all the packages that is necessary for the cleaning and importing done in this milestone. We are using readr, tidyverse, dplyr. 
+# Adding all the packages that are necessary for the cleaning and importing done
+# in this milestone. We are using readr, tidyverse, dplyr.
+
 library(readr)
 library(tidyverse)
 library(dplyr)
 ```
 
 ```{r}
-# Importing the CA dataset and the LA dataset. 
+# Importing the CA dataset and the LA dataset
 
 sim_CA <- read_csv("./sim_flu_CA.csv")
 View(sim_CA)
@@ -89,7 +91,7 @@ View(sim_CA)
 sim_LA <- read_csv("./sim_flu_LACounty_pop.csv")
 View(sim_LA)
 
-# Importing the vaccination dataset 
+# Importing the vaccination dataset
 
 ca_vax <- read_csv("./ca_vax_rates_quarter.csv")
 View(ca_vax)
@@ -98,7 +100,6 @@ View(ca_vax)
 Renaming the column names
 
 ```{r}
-
 # Renaming the columns in the sim_LA dataset
 
 sim_LA <- rename_with(sim_LA,
@@ -109,7 +110,6 @@ sim_LA <- rename_with(sim_LA,
                              fixed = TRUE)
                       ))
 
-
 ca_vax <- rename_with(ca_vax,
                       ~ tolower(
                         gsub(" ",
@@ -118,7 +118,7 @@ ca_vax <- rename_with(ca_vax,
                              fixed = TRUE)
                       ))
 
-# Renaming specific columns to match the column names in all the 3 datasets 
+# Renaming specific columns to match the column names in all the 3 datasets
 
 sim_CA <- sim_CA %>% rename(county_name = county)
 sim_CA <- sim_CA %>% rename(population = pop)
@@ -135,7 +135,8 @@ sim_LA <- sim_LA %>% rename(new_recovered = recovered_new, current_infected = in
 
 sim_CA <- sim_CA %>% rename(unique_id = time_int)
 
-# Create county_name column for the LA dataset. 
+# Creating county_name column for the LA dataset
+
 sim_LA <- sim_LA %>% mutate(county_name = "Los Angeles County")
 View(sim_LA)
 
@@ -146,10 +147,11 @@ colnames(sim_LA)
 Now that the column have been renamed to create a consistent dataset, we are adjusting the data types and formatting some of the columns to the appropriate data type.
 
 ```{r}
-# For the LA dataset 
+# For the LA dataset
+
 sim_LA$dt_diagnosis <- as.Date(sim_LA$dt_diagnosis, format = "%d%b%Y")
 
-# Converting race_ethnicity using case_when 
+# Converting race_ethnicity using case_when
 
 sim_CA <- sim_CA %>% 
   mutate(race_eth = case_when(
@@ -160,55 +162,54 @@ sim_CA <- sim_CA %>%
     race_ethnicity == 5 ~ "Native Hawaiian or Other Pacific Islander",
     race_ethnicity == 6 ~ "Multiracial",
     race_ethnicity == 7 ~ "Other/Unknown"
-    
   ))
-
 
 View(sim_LA)
 View(sim_CA)
 ```
 
 ```{r}
-# This chunk is combining both datasets to one dataset. 
-
-# Removing the columns in the sim_CA dataset that are not present in the sim_LA dataset to combine both the datasets. 
+# This chunk is combining both datasets to one dataset
+# Removing the columns in the sim_CA dataset that are not present
+# in the sim_LA dataset to combine both the datasets
 
 sim_CA_subset <- sim_CA[,-c(2,9,10,15,16)]
 
-# Reordering the columns 
+# Reordering the columns
+
 sim_LA <- sim_LA[, names(sim_CA_subset)]
 colnames(sim_LA)
 colnames(sim_CA_subset)
 
-# Appending both the datasets and combining sim_LA and sim_CA_subset. 
+# Appending both the datasets and combining sim_LA and sim_CA_subset
+
 sim_CA_LA <- rbind(sim_CA_subset, sim_LA)
 head(sim_CA_LA)
 ```
 
-We are choosing the age category as a sociodemographic category and we are focusing on Alameda county.
+We are choosing the age category as a sociodemographic category and we are focusing on Alameda County.
 
 ```{r}
-# Subsetting the combined dataset to only include age and alameda county. 
+# Subsetting the combined dataset to only include age and Alameda County
+# First subsetting the dataset to only have Alameda County observations
 
-# First subsetting the dataset to only have Alameda county observations. 
 sim_CA_LA_age_subset <- sim_CA_LA[sim_CA_LA$county_name == "Alameda County", ]
 
-# Since we are focusing only on age as a sociodemographic characteristic, we can remove race_eth, sex columns. 
+# Since we are focusing only on age as a demographic characteristic,
+# we can remove race_eth and sex columns
 
 sim_CA_LA_age_subset <- sim_CA_LA_age_subset[,-c(11,14)]
 View(sim_CA_LA_age_subset)
 
 str(sim_CA_LA_age_subset)
-
-
 ```
 
 ```{r}
+
 str(sim_CA_LA_age_subset)
 ```
 
 ```{r}
-
 
 aggregated_df <- sim_CA_LA_age_subset %>%
   drop_na(count_susceptible, current_infected, cumulative_infected, cumulative_recovered, cumulative_severe, population) %>%
@@ -224,6 +225,7 @@ aggregated_df <- sim_CA_LA_age_subset %>%
     cumulative_severe = last(cumulative_severe),
     population = last(population)
   )
+
 print(aggregated_df)
 ```
 
@@ -231,6 +233,7 @@ Cleaning the California Vaccination dataset
 
 ```{r}
 # Recoding the column names to match morbidity datasets to ready them to join
+
 ca_vax_renamed <- rename_with(ca_vax,
                       ~ tolower(
                         gsub(" ",
@@ -247,20 +250,27 @@ ca_vax_time_frame <- subset(ca_vax_renamed, quarter == "2023-04-01")
 ```
 
 ```{r}
-
 # Selecting demographic strata of interest
 
 ca_demographics <- subset(ca_vax_time_frame, demographic_category == "Age Group")
 ```
 
 ```{r}
-
 # Creating vaccination rate metric
 
 ca_metric <- mutate(
   ca_demographics,
-  "vaccination_rate" = (ca_demographics$cumulative_fully_vaccinated / ca_demographics$estimated_population) * 100)
+  "vaccination_rate" = 
+    (ca_demographics$cumulative_fully_vaccinated / ca_demographics$estimated_population) * 100)
 
 ca_metric <- ca_metric %>%
   rename("age_cat" = "demographic_value")
+```
+
+```{r}
+# Remaining modifications to enable merge
+
+ca_vax_county <- subset(ca_metric, county_name == "Alameda")
+
+# ca_vax_final <- needs to be completed with correct age ranges
 ```
