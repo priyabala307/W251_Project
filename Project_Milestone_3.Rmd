@@ -255,28 +255,12 @@ ca_vax_time_frame <- subset(ca_vax_renamed, quarter == "2023-04-01")
 # Selecting demographic strata of interest
 
 ca_demographics <- subset(ca_vax_time_frame, demographic_category == "Age Group")
-```
-
-```{r}
-# Creating vaccination rate metric
-
-ca_metric <- mutate(
-  ca_demographics,
-  "vaccination_rate" = 
-    (ca_demographics$cumulative_fully_vaccinated / ca_demographics$estimated_population) * 100)
 
 ca_demographics <- ca_demographics %>%
   rename("age_cat" = "demographic_value")
 ```
 
 ```{r}
-
-colnames(ca_metric)
-View(ca_metric)
-```
-
-```{r}
-# We are merging the subsetted sim_CA_LA_age_subset and ca_metric dataset. 
 
 # Remaining modifications to enable merge
 
@@ -292,8 +276,6 @@ ca_vax_county$age_cat = case_when(
 
 View(ca_vax_county)
 
-# merged_final <- merge(sim_CA_LA_age_subset, ca_metric, by = "county_name")
-# View(merged_final)
 ```
 
 ```{r}
@@ -365,11 +347,29 @@ Now that we have created an aggregated ca_vax dataset that is only for the Alame
 ca_vax_county_final <- ca_vax_county_final %>% mutate(county_name = case_when(
     county_name == "Alameda" ~ "Alameda County"))
 
-head(sim_Cali_aggregated)
-head(ca_vax_county_final)
 
 # Merging the two final datasets. 
 
 merged_final_alameda <- merge(sim_Cali_aggregated, ca_vax_county_final, by = "age_cat", all = TRUE)
-View(merged_final_alameda)
+print(merged_final_alameda)
+```
+
+Doing some final cleaning for the dataset.
+
+```{r}
+merged_final_alameda <- merged_final_alameda %>% rename(county_name = county_name.x)
+
+merged_final_alameda <- merged_final_alameda[,-c(12)]
+
+print(merged_final_alameda)
+
+
+```
+
+```{r}
+# Switching the first and second columns in the final merged dataset. 
+merged_final_alameda <- merged_final_alameda[,c(2,1,3:20)]
+print(merged_final_alameda)
+
+
 ```
