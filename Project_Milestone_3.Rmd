@@ -335,9 +335,7 @@ ca_vax_county_final <- ca_vax_county_final %>%
 head(ca_vax_county_final)
 ```
 
-Now that we have created an aggregated ca_vax dataset that is only for
-Alameda County in the April 1st 2023 quarter with age categories as the chosen
-demographic characteristic, we can combine the California vaccine dataset with the simulated dataset.
+Now that we have created an aggregated ca_vax dataset that is only for Alameda County in the April 1st 2023 quarter with age categories as the chosen demographic characteristic, we can combine the California vaccine dataset with the simulated dataset.
 
 ```{r}
 # Combining the two final datasets to create one final dataset
