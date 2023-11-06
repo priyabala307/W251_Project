@@ -17,15 +17,15 @@ The sim_flu_CA.csv file and sim_flu_LACounty.csv file together represent simulat
 
     -   Select demographic and geographic strata (s) of interest - DONE
 
-    -   Aggregate the data into a new dataframe to  include only one row per strata of interest
+    -   Aggregate the data into a new dataframe to  include only one row per strata of interest - DONE
 
 -   Vaccination dataset 
 
-    -   Recode values to be consistent with morbidity datasets so they can be joined
+    -   Recode values to be consistent with morbidity datasets so they can be joined - DONE
 
-    -   Select vaccination time frame that fits best with morbidity data and subset appropriately
+    -   Select vaccination time frame that fits best with morbidity data and subset appropriately - DONE
 
-    -   Select demographic strata(s) of interest
+    -   Select demographic strata(s) of interest - DONE
 
     -   Create a vaccination rate metric and summarize to include only one row per strata of interest
 
@@ -86,15 +86,15 @@ library(dplyr)
 # Importing the CA dataset and the LA dataset
 
 sim_CA <- read_csv("./sim_flu_CA.csv")
-View(sim_CA)
+head(sim_CA)
 
 sim_LA <- read_csv("./sim_flu_LACounty_pop.csv")
-View(sim_LA)
+head(sim_LA)
 
 # Importing the vaccination dataset
 
 ca_vax <- read_csv("./ca_vax_rates_quarter.csv")
-View(ca_vax)
+head(ca_vax)
 ```
 
 Renaming the column names
@@ -118,7 +118,7 @@ ca_vax <- rename_with(ca_vax,
                              fixed = TRUE)
                       ))
 
-# Renaming specific columns to match the column names in all the 3 datasets
+# Renaming specific columns to match the column names in all the three datasets
 
 sim_CA <- sim_CA %>% rename(county_name = county)
 sim_CA <- sim_CA %>% rename(population = pop)
@@ -127,7 +127,7 @@ head(sim_CA)
 head(sim_LA)
 ```
 
-We are first going to append sim_CA and sim_LA.
+We are first going to append sim_CA and sim_LA
 
 ```{r}
 
@@ -138,7 +138,7 @@ sim_CA <- sim_CA %>% rename(unique_id = time_int)
 # Creating county_name column for the LA dataset
 
 sim_LA <- sim_LA %>% mutate(county_name = "Los Angeles County")
-View(sim_LA)
+head(sim_LA)
 
 colnames(sim_CA)
 colnames(sim_LA)
@@ -153,7 +153,7 @@ sim_LA$dt_diagnosis <- as.Date(sim_LA$dt_diagnosis, format = "%d%b%Y")
 
 # Converting race_ethnicity using case_when
 
-sim_CA <- sim_CA %>% 
+sim_CA <- sim_CA %>%
   mutate(race_eth = case_when(
     race_ethnicity == 1 ~ "American Indian or Alaska Native",
     race_ethnicity == 2 ~ "Asian",
@@ -164,8 +164,8 @@ sim_CA <- sim_CA %>%
     race_ethnicity == 7 ~ "Other/Unknown"
   ))
 
-View(sim_LA)
-View(sim_CA)
+head(sim_LA)
+head(sim_CA)
 ```
 
 ```{r}
@@ -189,7 +189,7 @@ head(sim_CA_LA)
 
 We are choosing the age category as a sociodemographic category and we are focusing on
 
-da County.
+Alameda County.
 
 ```{r}
 # Subsetting the combined dataset to only include age and Alameda County
@@ -201,7 +201,7 @@ sim_CA_LA_age_subset <- sim_CA_LA[sim_CA_LA$county_name == "Alameda County", ]
 # we can remove race_eth and sex columns
 
 sim_CA_LA_age_subset <- sim_CA_LA_age_subset[,-c(11,14)]
-View(sim_CA_LA_age_subset)
+head(sim_CA_LA_age_subset)
 
 str(sim_CA_LA_age_subset)
 ```
@@ -231,7 +231,7 @@ sim_Cali_aggregated <- sim_CA_LA_age_subset %>%
 print(sim_Cali_aggregated)
 ```
 
-Cleaning the California Vaccination dataset
+Cleaning the California vaccination dataset
 
 ```{r}
 # Recoding the column names to match morbidity datasets to ready them to join
@@ -261,7 +261,6 @@ ca_demographics <- ca_demographics %>%
 ```
 
 ```{r}
-
 # Remaining modifications to enable merge
 
 ca_vax_county <- subset(ca_demographics, county_name == "Alameda")
@@ -274,8 +273,7 @@ ca_vax_county$age_cat = case_when(
     ca_vax_county$age_cat == "50-64" ~ "50-64",
     ca_vax_county$age_cat == "65+" ~ "65+")
 
-View(ca_vax_county)
-
+head(ca_vax_county)
 ```
 
 ```{r}
@@ -283,18 +281,20 @@ View(ca_vax_county)
 subset_data_age_17 <- ca_vax_county %>%
   filter(age_cat == "0-17")
 
-View(subset_data_age_17)
+head(subset_data_age_17)
 
 ca_vax_county_age_no17 <- ca_vax_county %>%
   filter(age_cat != "0-17")
 
-View(ca_vax_county_age_no17)
+head(ca_vax_county_age_no17)
 
 ca_vax_county_age_no17 <- ca_vax_county_age_no17[,-c(2,3)]
 ```
 
 ```{r}
-# Assuming your dataset is named ca_vax_county, you can use the following code to aggregate the data into a single row.
+# Assuming your dataset is named ca_vax_county, the following code
+# can be used to aggregate the data into a single row
+
 aggregated_data_17 <- subset_data_age_17 %>%
   group_by(age_cat) %>%
   summarise(
@@ -311,65 +311,65 @@ aggregated_data_17 <- subset_data_age_17 %>%
   ) %>%
   distinct()
 
-View(aggregated_data_17)
-
+head(aggregated_data_17)
 
 order <- c("county_name", "age_cat", "estimated_population", "dt_admin", "total_partial_vaccinated", "cumulative_fully_vaccinated", "cumulative_at_least_one_dose", "cumulative_unvaccinated", "suppress_data", "cumulative_up_to_date_vax", "quarter")
 
 # Reorder the columns of the first dataset
 aggregated_data_17 <- aggregated_data_17[, order]
 
-View(aggregated_data_17)
+head(aggregated_data_17)
 
-ca_vax_county_final <- rbind(aggregated_data_17, ca_vax_county_age_no17) 
+ca_vax_county_final <- rbind(aggregated_data_17, ca_vax_county_age_no17)
 print(ca_vax_county_final)
-
 ```
 
-We are calculating the vaccination rate for the California vaccination dataset.
+We are calculating the vaccination rate for the California vaccination dataset
 
 ```{r}
+# Creating vaccination rate metric
 
 ca_vax_county_final <- ca_vax_county_final %>%
   mutate(vaccination_rate = (cumulative_fully_vaccinated / estimated_population) * 100)
-View(ca_vax_county_final)
 
-# The observations in the 
+head(ca_vax_county_final)
 ```
 
-Now that we have created an aggregated ca_vax dataset that is only for the Alameda county in the April 1st 2023 quarter with age categories as the chosen sociodemographic characteristic, we can combine the California vaccine dataset with the simulated dataset.
+Now that we have created an aggregated ca_vax dataset that is only for
+Alameda County in the April 1st 2023 quarter with age categories as the chosen
+demographic characteristic, we can combine the California vaccine dataset with the simulated dataset.
 
 ```{r}
-# Combining the two final datasets to create one final dataset. 
+# Combining the two final datasets to create one final dataset
 
-# The ca_vax_county_final dataset has its county_name variables as Alameda rather than Alameda County, thus we are adding additional cleaning to make the merge of the combined datasets easier. 
+# The ca_vax_county_final dataset has its county_name variables as Alameda
+# rather than Alameda County, thus we are adding additional cleaning
+# to make the merger of the combined datasets easier
 
 ca_vax_county_final <- ca_vax_county_final %>% mutate(county_name = case_when(
     county_name == "Alameda" ~ "Alameda County"))
 
-
-# Merging the two final datasets. 
+# Merging the two final datasets
 
 merged_final_alameda <- merge(sim_Cali_aggregated, ca_vax_county_final, by = "age_cat", all = TRUE)
 print(merged_final_alameda)
 ```
 
-Doing some final cleaning for the dataset.
+Doing some final cleaning for the dataset
 
 ```{r}
+
 merged_final_alameda <- merged_final_alameda %>% rename(county_name = county_name.x)
 
 merged_final_alameda <- merged_final_alameda[,-c(12)]
 
 print(merged_final_alameda)
-
-
 ```
 
 ```{r}
-# Switching the first and second columns in the final merged dataset. 
-merged_final_alameda <- merged_final_alameda[,c(2,1,3:20)]
+# Switching the first and second columns in the final merged dataset
+
+merged_final_alameda <- merged_final_alameda[,c(2,1,3:21)]
+
 print(merged_final_alameda)
-
-
 ```
