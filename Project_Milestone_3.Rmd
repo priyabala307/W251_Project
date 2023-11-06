@@ -264,3 +264,15 @@ ca_metric <- mutate(
 ca_metric <- ca_metric %>%
   rename("age_cat" = "demographic_value")
 ```
+
+```{r}
+colnames(ca_metric)
+View(ca_metric)
+```
+
+```{r}
+# We are merging the subsetted sim_CA_LA_age_subset and ca_metric dataset. 
+
+merged_final <- merge(sim_CA_LA_age_subset, ca_metric, by = "county_name")
+View(merged_final)
+```
