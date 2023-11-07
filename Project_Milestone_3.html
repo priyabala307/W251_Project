@@ -357,83 +357,17 @@ display: none;
 </div>
 
 
-<div id="data-cleaning-milestone-3" class="section level4">
-<h4><strong>Data Cleaning: Milestone 3</strong></h4>
-<p>The sim_flu_CA.csv file and sim_flu_LACounty.csv file together
-represent simulated morbidity for the entire state of California. While
-it’s certainly possible for data from different sources to adhere to a
-format standard, one of the challenges of working with secondary data is
-that it often does not work out that way. Therefore to prepare each
-dataset (milestone #3) so that they can be combined into one, whole
-state, dataset you will need to do the following:</p>
-<ul>
-<li><p>Flu morbidity datasets (from CA and LA County)</p>
-<ul>
-<li><p>Recode column names, values, or formats that are in discordant
-(dates, etc) - DONE</p></li>
-<li><p>Combine morbidity datasets into a single dataset - DONE</p></li>
-<li><p>Select demographic and geographic strata (s) of interest -
-DONE</p></li>
-<li><p>Aggregate the data into a new dataframe to  include only one row
-per strata of interest - DONE</p></li>
-</ul></li>
-<li><p>Vaccination dataset </p>
-<ul>
-<li><p>Recode values to be consistent with morbidity datasets so they
-can be joined - DONE</p></li>
-<li><p>Select vaccination time frame that fits best with morbidity data
-and subset appropriately - DONE</p></li>
-<li><p>Select demographic strata(s) of interest - DONE</p></li>
-<li><p>Create a vaccination rate metric and summarize to include only
-one row per strata of interest - DONE</p></li>
-</ul></li>
-</ul>
-</div>
-<div id="clean-each-dataset-and-include-descriptive-statistics-for-relevant-data-elements" class="section level3">
-<h3>Clean each dataset and include descriptive statistics for relevant
-data elements</h3>
-<p>Please turn in an html document created from an Rmd or Qmd with the
-following components:</p>
-<ul>
-<li><p>Subset rows or columns, as needed</p></li>
-<li><p>Create new variables needed for analysis (minimum 2)</p>
-<ul>
-<li><p>New variables should be created based on existing columns; for
-example</p>
-<ul>
-<li><p>Calculating a rate</p></li>
-<li><p>Combining character strings</p></li>
-<li><p>Aggregation</p></li>
-</ul></li>
-</ul></li>
-<li><p>Clean variables needed for analysis (minimum 2)</p>
-<ul>
-<li><p>Examples</p>
-<ul>
-<li><p>Recode invalid values</p></li>
-<li><p>Handle missing data</p></li>
-<li><p>Recode categories</p></li>
-</ul></li>
-</ul></li>
-<li><p>Data re-structured as needed (aggregated/summarized and/or
-pivoted)</p></li>
-<li><p>Data dictionary based on clean dataset (minimum 4 data elements),
-including:</p>
-<ul>
-<li><p>Variable name</p></li>
-<li><p>Data type</p></li>
-<li><p>Description</p></li>
-</ul></li>
-<li><p>One or more tables with descriptive statistics for 4 data
-elements</p></li>
-<li><p>Html output that is professionally prepared for presentation</p>
-<ul>
-<li><p>Only the necessary information is outputted (you should suppress,
-for example, entire data frame outputs)</p></li>
-<li><p>Use of headers and sub headers to create an organized
-document</p></li>
-</ul></li>
-</ul>
+<div id="project-milestone-3" class="section level1">
+<h1>Project Milestone 3</h1>
+<div id="pbhlth-w251" class="section level2">
+<h2>PBHLTH W251</h2>
+<div id="priya-bala-and-mihir-pandya" class="section level3">
+<h3>Priya Bala and Mihir Pandya</h3>
+<p>This scenario contains demographic and geographic information,
+morbidity, disease severity, and county and regional vaccination data
+from a simulated California flu season.</p>
+<p>To start the cleaning of the 3 datasets provided for Scenario 1, we
+are installing and using all the necessary packages listed below.</p>
 <pre class="r"><code># Adding all the packages that are necessary for the cleaning and importing done
 # in this milestone. We are using readr, tidyverse, dplyr.
 
@@ -457,6 +391,9 @@ library(kableExtra)</code></pre>
 ## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     group_rows</code></pre>
+<p>In the below code chunk we are importing the 3 datasets provided for
+this scenario. Since the datasets are in a .csv format we are using the
+read_csv() command from the <strong>readr</strong> package.</p>
 <pre class="r"><code># Importing the CA dataset and the LA dataset
 
 sim_CA &lt;- read_csv(&quot;./sim_flu_CA.csv&quot;)</code></pre>
@@ -534,8 +471,29 @@ ca_vax &lt;- read_csv(&quot;./ca_vax_rates_quarter.csv&quot;)</code></pre>
 ## #   `Total Partial Vaccinated` &lt;dbl&gt;, `Cumulative Fully Vaccinated` &lt;dbl&gt;,
 ## #   `Cumulative At Least ONe Dose` &lt;dbl&gt;, `Cumulative Unvaccinated` &lt;dbl&gt;,
 ## #   `Suppress Data` &lt;lgl&gt;, `Cumulative Up To Date Vax` &lt;dbl&gt;, Quarter &lt;date&gt;</code></pre>
-<p>Renaming the column names</p>
-<pre class="r"><code># Renaming the columns in the sim_LA dataset
+<p><strong>The general idea for cleaning and combining the three dataset
+involves:</strong></p>
+<ol style="list-style-type: decimal">
+<li>Clean the sim_CA and the sim_LA datasets separately so that they can
+appended to one dataset.</li>
+<li>Subset and aggregate the appended dataset to showcase the morbidity
+across the chosen sociodemographic characteristic.</li>
+<li>Clean the ca_vax dataset separately and aggregate across chosen
+sociodemographic characteristic if necessary.</li>
+<li>Merge the cleaned/aggregated ca_vax dataset with the appended
+dataset to create the final merged dataset for scenario 1.</li>
+</ol>
+</div>
+</div>
+<div id="cleaning-the-california-morbidity-datasets-sim_ca-and-sim_la." class="section level2">
+<h2>Cleaning the California Morbidity datasets (sim_CA and sim_LA).</h2>
+<div id="step-1-clean-the-sim_ca-and-the-sim_la-datasets-separately-so-that-they-can-appended-to-one-dataset." class="section level4">
+<h4><strong>Step 1: Clean the sim_CA and the sim_LA datasets separately
+so that they can appended to one dataset.</strong></h4>
+<p>The first step in cleaning the sim_CA and sim_LA datasets is
+<strong>renaming</strong> the column names to be in a
+<strong>snake_case</strong> format.</p>
+<pre class="r"><code># Renaming the columns in the sim_LA dataset to a snake_case format
 
 sim_LA &lt;- rename_with(sim_LA,
                       ~ tolower(
@@ -599,12 +557,19 @@ head(ca_vax)</code></pre>
 ## # ℹ 7 more variables: infected_current &lt;dbl&gt;, infected_cumulative &lt;dbl&gt;,
 ## #   recovered_cumulative &lt;dbl&gt;, susceptible &lt;dbl&gt;, severe_new &lt;dbl&gt;,
 ## #   severe_cumulative &lt;dbl&gt;, population &lt;dbl&gt;</code></pre>
-<p>We are first going to append sim_CA and sim_LA</p>
-<pre class="r"><code>sim_LA &lt;- sim_LA %&gt;% rename(new_recovered = recovered_new, current_infected = infected_current, new_infections = dx_new, count_susceptible = susceptible, cumulative_infected = infected_cumulative, cumulative_recovered = recovered_cumulative, new_severe = severe_new, cumulative_severe = severe_cumulative, dt_diagnosis = dt_dx, age_cat = age_category, report_date = dt_report)
+<p>We are now renaming the sim_LA dataset to match the column names in
+the sim_CA dataset and creating a new column for sim_LA to match sim_CA
+columns.</p>
+<pre class="r"><code># Renaming the sim_LA dataset. 
 
+sim_LA &lt;- sim_LA %&gt;% rename(new_recovered = recovered_new, current_infected = infected_current, new_infections = dx_new, count_susceptible = susceptible, cumulative_infected = infected_cumulative, cumulative_recovered = recovered_cumulative, new_severe = severe_new, cumulative_severe = severe_cumulative, dt_diagnosis = dt_dx, age_cat = age_category, report_date = dt_report)
+
+# Renaming the sim_CA column time_int to unique_id to prevent the misinterpretation
+# of time_int as a date variable.  
 sim_CA &lt;- sim_CA %&gt;% rename(unique_id = time_int)
 
-# Creating county_name column for the LA dataset
+# Creating county_name column for the LA dataset because the sim_LA dataset did not
+# have a column dedicated for the county name. 
 
 sim_LA &lt;- sim_LA %&gt;% mutate(county_name = &quot;Los Angeles County&quot;)
 head(sim_LA)</code></pre>
@@ -620,7 +585,8 @@ head(sim_LA)</code></pre>
 ## # ℹ 8 more variables: current_infected &lt;dbl&gt;, cumulative_infected &lt;dbl&gt;,
 ## #   cumulative_recovered &lt;dbl&gt;, count_susceptible &lt;dbl&gt;, new_severe &lt;dbl&gt;,
 ## #   cumulative_severe &lt;dbl&gt;, population &lt;dbl&gt;, county_name &lt;chr&gt;</code></pre>
-<pre class="r"><code>colnames(sim_CA)</code></pre>
+<pre class="r"><code># Printing the column names to compare the cleaned sim_LA and the sim_CA datasets. 
+colnames(sim_CA)</code></pre>
 <pre><code>##  [1] &quot;county_name&quot;            &quot;unique_id&quot;              &quot;new_infections&quot;        
 ##  [4] &quot;new_recovered&quot;          &quot;count_susceptible&quot;      &quot;current_infected&quot;      
 ##  [7] &quot;cumulative_infected&quot;    &quot;cumulative_recovered&quot;   &quot;new_unrecovered&quot;       
@@ -640,7 +606,8 @@ the appropriate data type.</p>
 
 sim_LA$dt_diagnosis &lt;- as.Date(sim_LA$dt_diagnosis, format = &quot;%d%b%Y&quot;)
 
-# Converting race_ethnicity using case_when
+# Converting race_ethnicity using case_when, we are using the data dictionary provided
+# for scenario 1 by the instructors. 
 
 sim_CA &lt;- sim_CA %&gt;%
   mutate(race_eth = case_when(
@@ -653,6 +620,7 @@ sim_CA &lt;- sim_CA %&gt;%
     race_ethnicity == 7 ~ &quot;Other/Unknown&quot;
   ))
 
+# Printing the first few rows of the sim_LA and sim_CA dataset. 
 head(sim_LA)</code></pre>
 <pre><code>## # A tibble: 6 × 15
 ##   dt_diagnosis age_cat sex    race_eth  report_date new_infections new_recovered
@@ -681,13 +649,13 @@ head(sim_LA)</code></pre>
 ## #   cumulative_unrecovered &lt;dbl&gt;, new_severe &lt;dbl&gt;, cumulative_severe &lt;dbl&gt;,
 ## #   age_cat &lt;chr&gt;, sex &lt;chr&gt;, race_ethnicity &lt;dbl&gt;, report_date &lt;date&gt;,
 ## #   dt_diagnosis &lt;date&gt;, population &lt;dbl&gt;, race_eth &lt;chr&gt;</code></pre>
-<pre class="r"><code># This chunk is combining both datasets to one dataset
+<pre class="r"><code># This chunk is appending both datasets to one dataset using rbind(). 
 # Removing the columns in the sim_CA dataset that are not present
 # in the sim_LA dataset to combine both the datasets
 
 sim_CA_subset &lt;- sim_CA[,-c(2,9,10,15,16)]
 
-# Reordering the columns
+# Reordering the columns to combine the two datasets easily. 
 
 sim_LA &lt;- sim_LA[, names(sim_CA_subset)]
 colnames(sim_LA)</code></pre>
@@ -705,6 +673,7 @@ colnames(sim_LA)</code></pre>
 <pre class="r"><code># Appending both the datasets and combining sim_LA and sim_CA_subset
 
 sim_CA_LA &lt;- rbind(sim_CA_subset, sim_LA)
+# Printing the first few columns of the appended dataset. 
 head(sim_CA_LA)</code></pre>
 <pre><code>## # A tibble: 6 × 14
 ##   county_name    new_infections new_recovered count_susceptible current_infected
@@ -718,9 +687,16 @@ head(sim_CA_LA)</code></pre>
 ## # ℹ 9 more variables: cumulative_infected &lt;dbl&gt;, cumulative_recovered &lt;dbl&gt;,
 ## #   new_severe &lt;dbl&gt;, cumulative_severe &lt;dbl&gt;, age_cat &lt;chr&gt;, sex &lt;chr&gt;,
 ## #   dt_diagnosis &lt;date&gt;, population &lt;dbl&gt;, race_eth &lt;chr&gt;</code></pre>
-<p>We are choosing the age category as a sociodemographic category and
-we are focusing on</p>
-<p>Alameda County.</p>
+<p>Now that we have completed step 1 in the cleaning process, we are
+moving on to the next step.</p>
+</div>
+<div id="step-2-subset-and-aggregate-the-appended-dataset-to-showcase-the-morbidity-across-the-chosen-sociodemographic-characteristic." class="section level4">
+<h4><strong>Step 2: Subset and aggregate the appended dataset to
+showcase the morbidity across the chosen sociodemographic
+characteristic.</strong></h4>
+<p>For our analysis, we are choosing <strong>age category as a
+sociodemographic category</strong> and we are focusing on
+<strong>Alameda County as a geographical location</strong>.</p>
 <pre class="r"><code># Subsetting the combined dataset to only include age and Alameda County
 # First subsetting the dataset to only have Alameda County observations
 
@@ -757,17 +733,25 @@ head(sim_CA_LA_age_subset)</code></pre>
 ##  $ age_cat             : chr [1:2016] &quot;0-17&quot; &quot;0-17&quot; &quot;0-17&quot; &quot;0-17&quot; ...
 ##  $ dt_diagnosis        : Date[1:2016], format: &quot;2022-10-02&quot; &quot;2022-10-10&quot; ...
 ##  $ population          : num [1:2016] 46000 46000 46000 46000 46000 46000 46000 46000 46000 46000 ...</code></pre>
+</div>
+<div id="step-2-cont.-aggregating-the-appended-dataset-to-ensure-that-each-age-category-has-its-own-row-for-each-of-the-columns." class="section level4">
+<h4>Step 2 cont.: Aggregating the appended dataset to ensure that each
+age category has its own row for each of the columns.</h4>
+<p>The aggregations were done by summarizing each of the columns in the
+way we thought were appropriate. For the raw counts of the morbidity in
+the dataset the summarizing measure “Mean” was used, whereas for
+cumulative measures and population the final measurement was taken.</p>
 <pre class="r"><code>sim_Cali_aggregated &lt;- sim_CA_LA_age_subset %&gt;%
   drop_na(count_susceptible, current_infected, cumulative_infected, cumulative_recovered, cumulative_severe, population) %&gt;%
   group_by(county_name, age_cat) %&gt;%
   summarise(
     mean_new_infections = mean(new_infections),
     mean_new_recovered = mean(new_recovered),
-    count_susceptible = last(count_susceptible),
+    mean_count_susceptible = mean(count_susceptible),
     mean_current_infected = mean(current_infected),
     cumulative_infected = last(cumulative_infected),
     cumulative_recovered = last(cumulative_recovered),
-    new_severe = sum(new_severe),
+    mean_new_severe = mean(new_severe),
     cumulative_severe = last(cumulative_severe),
     population = last(population)
   )</code></pre>
@@ -776,16 +760,28 @@ head(sim_CA_LA_age_subset)</code></pre>
 <pre class="r"><code>print(sim_Cali_aggregated)</code></pre>
 <pre><code>## # A tibble: 4 × 11
 ## # Groups:   county_name [1]
-##   county_name   age_cat mean_new_infections mean_new_recovered count_susceptible
-##   &lt;chr&gt;         &lt;chr&gt;                 &lt;dbl&gt;              &lt;dbl&gt;             &lt;dbl&gt;
-## 1 Alameda Coun… 0-17                   290.               290.             28831
-## 2 Alameda Coun… 18-49                  645.               645.             59399
-## 3 Alameda Coun… 50-64                  274.               274.             18208
-## 4 Alameda Coun… 65+                    241.               241.              8753
-## # ℹ 6 more variables: mean_current_infected &lt;dbl&gt;, cumulative_infected &lt;dbl&gt;,
-## #   cumulative_recovered &lt;dbl&gt;, new_severe &lt;dbl&gt;, cumulative_severe &lt;dbl&gt;,
+##   county_name    age_cat mean_new_infections mean_new_recovered
+##   &lt;chr&gt;          &lt;chr&gt;                 &lt;dbl&gt;              &lt;dbl&gt;
+## 1 Alameda County 0-17                   290.               290.
+## 2 Alameda County 18-49                  645.               645.
+## 3 Alameda County 50-64                  274.               274.
+## 4 Alameda County 65+                    241.               241.
+## # ℹ 7 more variables: mean_count_susceptible &lt;dbl&gt;,
+## #   mean_current_infected &lt;dbl&gt;, cumulative_infected &lt;dbl&gt;,
+## #   cumulative_recovered &lt;dbl&gt;, mean_new_severe &lt;dbl&gt;, cumulative_severe &lt;dbl&gt;,
 ## #   population &lt;dbl&gt;</code></pre>
-<p>Cleaning the California vaccination dataset</p>
+<p>We have successfully cleaned and subsetted the sim_CA, sim_LA
+datasets and have combined them into one California dataset. We have
+also aggregated the dataset with regards to age and created an
+aggregated dataset as well.</p>
+</div>
+<div id="cleaning-the-california-vaccination-dataset" class="section level3">
+<h3>Cleaning the California vaccination dataset</h3>
+<div id="step-3-clean-the-ca_vax-dataset-separately-and-aggregate-across-chosen-sociodemographic-characteristic-if-necessary." class="section level4">
+<h4>Step 3: Clean the ca_vax dataset separately and aggregate across
+chosen sociodemographic characteristic if necessary.</h4>
+<p>We are cleaning the ca_vax dataset by recoding the column names to
+follow snake_case format.</p>
 <pre class="r"><code># Recoding the column names to match morbidity datasets to ready them to join
 
 ca_vax_renamed &lt;- rename_with(ca_vax,
@@ -795,15 +791,29 @@ ca_vax_renamed &lt;- rename_with(ca_vax,
                              .x,
                              fixed = TRUE)
                       ))</code></pre>
-<pre class="r"><code># Selecting a time frame that matches the morbidity dataset and subset
+<p>The project milestone required us to create a subset within the
+ca_vax dataset with regards to a specific time frame. We are selecting a
+time frame, at April 1st, that matches the appended California morbidity
+dataset and subset with regards to sociodemographic and geographic
+characteristic.</p>
+<pre class="r"><code># Selecting a time frame that matches the morbidity dataset and subset: April 1st 
 
 ca_vax_time_frame &lt;- subset(ca_vax_renamed, quarter == &quot;2023-04-01&quot;)</code></pre>
-<pre class="r"><code># Selecting demographic strata of interest
+<pre class="r"><code># Selecting age category as the demographic strata of interest to maintain the consistency with the morbidity dataset. 
 
 ca_demographics &lt;- subset(ca_vax_time_frame, demographic_category == &quot;Age Group&quot;)
 
+# Renaming the column to match the morbidity dataset. 
+
 ca_demographics &lt;- ca_demographics %&gt;%
   rename(&quot;age_cat&quot; = &quot;demographic_value&quot;)</code></pre>
+<p>We are applying the same geographical (Alameda county) and
+sociodemographic characteristics (Age category) from the California
+morbidity dataset.</p>
+<p>We observed that the ca_demographics dataset had its age categories
+classified differently, to maintain consistency with the appended
+morbidity dataset we have reclassified the age categories using
+case_when() command.</p>
 <pre class="r"><code># Remaining modifications to enable merge
 
 ca_vax_county &lt;- subset(ca_demographics, county_name == &quot;Alameda&quot;)
@@ -830,7 +840,18 @@ head(ca_vax_county)</code></pre>
 ## #   cumulative_fully_vaccinated &lt;dbl&gt;, cumulative_at_least_one_dose &lt;dbl&gt;,
 ## #   cumulative_unvaccinated &lt;dbl&gt;, suppress_data &lt;lgl&gt;,
 ## #   cumulative_up_to_date_vax &lt;dbl&gt;, quarter &lt;date&gt;</code></pre>
-<pre class="r"><code>subset_data_age_17 &lt;- ca_vax_county %&gt;%
+<pre class="r"><code># Note that the reclassification has given us 3 entries under 0-17 years.  </code></pre>
+</div>
+<div id="step-3a-subsetting-and-aggregating-the-ca_vax_county-data" class="section level4">
+<h4>Step 3a: Subsetting and aggregating the ca_vax_county data</h4>
+<p>Since the previous classifications of the age category had three
+subcategories that fit under 0-17 years, we are subsetting the above
+dataset into only 0-17 years and not included in the 0-17 years. We are
+conducting this subset to aggregate the 0-17 subset into one row rather
+than 3 rows.</p>
+<pre class="r"><code># Subsetting the dataset into two datasets. 
+
+subset_data_age_17 &lt;- ca_vax_county %&gt;%
   filter(age_cat == &quot;0-17&quot;)
 
 head(subset_data_age_17)</code></pre>
@@ -859,9 +880,12 @@ head(ca_vax_county_age_no17)</code></pre>
 ## #   cumulative_unvaccinated &lt;dbl&gt;, suppress_data &lt;lgl&gt;,
 ## #   cumulative_up_to_date_vax &lt;dbl&gt;, quarter &lt;date&gt;</code></pre>
 <pre class="r"><code>ca_vax_county_age_no17 &lt;- ca_vax_county_age_no17[,-c(2,3)]</code></pre>
-<pre class="r"><code># Assuming your dataset is named ca_vax_county, the following code
-# can be used to aggregate the data into a single row
-
+<p>Now that we have subsetted the 0-17 year observations, we are
+aggregating the dataset to get one row for the 0-17 entry. For this
+dataset we have used the summary measure “<strong>Sum</strong>” to
+summarize all the columns in this dataset, because we are trying to
+combine/add all the three entries of 0-17 into one.</p>
+<pre class="r"><code># Aggregating the 0-17 dataset. 
 aggregated_data_17 &lt;- subset_data_age_17 %&gt;%
   group_by(age_cat) %&gt;%
   summarise(
@@ -896,7 +920,10 @@ aggregated_data_17 &lt;- subset_data_age_17 %&gt;%
 ## # ℹ 7 more variables: cumulative_at_least_one_dose &lt;dbl&gt;,
 ## #   cumulative_unvaccinated &lt;dbl&gt;, cumulative_up_to_date_vax &lt;dbl&gt;,
 ## #   county_name &lt;chr&gt;, dt_admin &lt;date&gt;, suppress_data &lt;lgl&gt;, quarter &lt;date&gt;</code></pre>
-<pre class="r"><code>order &lt;- c(&quot;county_name&quot;, &quot;age_cat&quot;, &quot;estimated_population&quot;, &quot;dt_admin&quot;, &quot;total_partial_vaccinated&quot;, &quot;cumulative_fully_vaccinated&quot;, &quot;cumulative_at_least_one_dose&quot;, &quot;cumulative_unvaccinated&quot;, &quot;suppress_data&quot;, &quot;cumulative_up_to_date_vax&quot;, &quot;quarter&quot;)
+<pre class="r"><code># After creating the aggregated dataset we are trying to combine it with the other subsetted
+# dataset (non 0-17 age categories) by matching the columns 
+
+order &lt;- c(&quot;county_name&quot;, &quot;age_cat&quot;, &quot;estimated_population&quot;, &quot;dt_admin&quot;, &quot;total_partial_vaccinated&quot;, &quot;cumulative_fully_vaccinated&quot;, &quot;cumulative_at_least_one_dose&quot;, &quot;cumulative_unvaccinated&quot;, &quot;suppress_data&quot;, &quot;cumulative_up_to_date_vax&quot;, &quot;quarter&quot;)
 
 # Reorder the columns of the first dataset
 aggregated_data_17 &lt;- aggregated_data_17[, order]
@@ -923,9 +950,12 @@ print(ca_vax_county_final)</code></pre>
 ## # ℹ 6 more variables: cumulative_fully_vaccinated &lt;dbl&gt;,
 ## #   cumulative_at_least_one_dose &lt;dbl&gt;, cumulative_unvaccinated &lt;dbl&gt;,
 ## #   suppress_data &lt;lgl&gt;, cumulative_up_to_date_vax &lt;dbl&gt;, quarter &lt;date&gt;</code></pre>
-<p>We are calculating the vaccination rate for the California
-vaccination dataset</p>
-<pre class="r"><code># Creating vaccination rate metric
+<pre class="r"><code># The final ca_vax_county dataset has been created. This dataset only has one row per age category. This is what we want to ensure we can merge it with the California morbidity dataset.</code></pre>
+</div>
+<div id="step-3b-we-are-calculating-the-vaccination-rate-for-the-california-vaccination-dataset" class="section level4">
+<h4>Step 3b: We are calculating the vaccination rate for the California
+vaccination dataset</h4>
+<pre class="r"><code># Creating vaccination rate metric for the final ca_vax_county dataset. 
 
 ca_vax_county_final &lt;- ca_vax_county_final %&gt;%
   mutate(vaccination_rate = (cumulative_fully_vaccinated / estimated_population) * 100)
@@ -943,6 +973,10 @@ head(ca_vax_county_final)</code></pre>
 ## #   cumulative_at_least_one_dose &lt;dbl&gt;, cumulative_unvaccinated &lt;dbl&gt;,
 ## #   suppress_data &lt;lgl&gt;, cumulative_up_to_date_vax &lt;dbl&gt;, quarter &lt;date&gt;,
 ## #   vaccination_rate &lt;dbl&gt;</code></pre>
+</div>
+<div id="step-4-merge-the-cleanedaggregated-ca_vax-dataset-with-the-appended-dataset-to-create-the-final-merged-dataset-for-scenario-1." class="section level4">
+<h4>Step 4: Merge the cleaned/aggregated ca_vax dataset with the
+appended dataset to create the final merged dataset for scenario 1.</h4>
 <p>Now that we have created an aggregated ca_vax dataset that is only
 for Alameda County in the April 1st 2023 quarter with age categories as
 the chosen demographic characteristic, we can combine the California
@@ -965,21 +999,21 @@ print(merged_final_alameda)</code></pre>
 ## 2   18-49 Alameda County            645.2837           645.2837
 ## 3   50-64 Alameda County            273.9464           273.9464
 ## 4     65+ Alameda County            241.0913           241.0913
-##   count_susceptible mean_current_infected cumulative_infected
-## 1             28831              295.5397               22183
-## 2             59399              679.3135               45212
-## 3             18208              322.3929               13883
-## 4              8753              320.8512                6476
-##   cumulative_recovered new_severe cumulative_severe population  county_name.y
-## 1                22183        140                21      50911 Alameda County
-## 2                45212       2098               292     104366 Alameda County
-## 3                13883       4444               479      32014 Alameda County
-## 4                 6476       9688               479      15204 Alameda County
-##   estimated_population   dt_admin total_partial_vaccinated
-## 1               340355 2023-06-30                    22328
-## 2               754988 2023-06-30                    62723
-## 3               317128 2023-06-30                    20448
-## 4               265863 2023-06-30                    18362
+##   mean_count_susceptible mean_current_infected cumulative_infected
+## 1               18969.37              295.5397               22183
+## 2               42183.61              679.3135               45212
+## 3               17847.07              322.3929               13883
+## 4               15748.25              320.8512                6476
+##   cumulative_recovered mean_new_severe cumulative_severe population
+## 1                22183       0.2777778                21      50911
+## 2                45212       4.1626984               292     104366
+## 3                13883       8.8174603               479      32014
+## 4                 6476      19.2222222               479      15204
+##    county_name.y estimated_population   dt_admin total_partial_vaccinated
+## 1 Alameda County               340355 2023-06-30                    22328
+## 2 Alameda County               754988 2023-06-30                    62723
+## 3 Alameda County               317128 2023-06-30                    20448
+## 4 Alameda County               265863 2023-06-30                    18362
 ##   cumulative_fully_vaccinated cumulative_at_least_one_dose
 ## 1                      214952                       237343
 ## 2                      669899                       732636
@@ -995,8 +1029,13 @@ print(merged_final_alameda)</code></pre>
 ## 2         88.72975
 ## 3         89.42950
 ## 4         92.48372</code></pre>
-<p>Doing some final cleaning for the dataset</p>
-<pre class="r"><code>merged_final_alameda &lt;- merged_final_alameda %&gt;% rename(county_name = county_name.x)
+<p>The final combined dataset has been created and printed above, but we
+need to perform some additional cleaning.</p>
+</div>
+<div id="step-4a-doing-some-final-cleaning-for-the-dataset" class="section level4">
+<h4>Step 4a: Doing some final cleaning for the dataset</h4>
+<pre class="r"><code># The final dataset has some additional columns that can be renamed/removed. 
+merged_final_alameda &lt;- merged_final_alameda %&gt;% rename(county_name = county_name.x)
 
 merged_final_alameda &lt;- merged_final_alameda[,-c(12)]
 
@@ -1006,16 +1045,16 @@ print(merged_final_alameda)</code></pre>
 ## 2   18-49 Alameda County            645.2837           645.2837
 ## 3   50-64 Alameda County            273.9464           273.9464
 ## 4     65+ Alameda County            241.0913           241.0913
-##   count_susceptible mean_current_infected cumulative_infected
-## 1             28831              295.5397               22183
-## 2             59399              679.3135               45212
-## 3             18208              322.3929               13883
-## 4              8753              320.8512                6476
-##   cumulative_recovered new_severe cumulative_severe population
-## 1                22183        140                21      50911
-## 2                45212       2098               292     104366
-## 3                13883       4444               479      32014
-## 4                 6476       9688               479      15204
+##   mean_count_susceptible mean_current_infected cumulative_infected
+## 1               18969.37              295.5397               22183
+## 2               42183.61              679.3135               45212
+## 3               17847.07              322.3929               13883
+## 4               15748.25              320.8512                6476
+##   cumulative_recovered mean_new_severe cumulative_severe population
+## 1                22183       0.2777778                21      50911
+## 2                45212       4.1626984               292     104366
+## 3                13883       8.8174603               479      32014
+## 4                 6476      19.2222222               479      15204
 ##   estimated_population   dt_admin total_partial_vaccinated
 ## 1               340355 2023-06-30                    22328
 ## 2               754988 2023-06-30                    62723
@@ -1046,16 +1085,16 @@ print(merged_final_alameda)</code></pre>
 ## 2 Alameda County   18-49            645.2837           645.2837
 ## 3 Alameda County   50-64            273.9464           273.9464
 ## 4 Alameda County     65+            241.0913           241.0913
-##   count_susceptible mean_current_infected cumulative_infected
-## 1             28831              295.5397               22183
-## 2             59399              679.3135               45212
-## 3             18208              322.3929               13883
-## 4              8753              320.8512                6476
-##   cumulative_recovered new_severe cumulative_severe population
-## 1                22183        140                21      50911
-## 2                45212       2098               292     104366
-## 3                13883       4444               479      32014
-## 4                 6476       9688               479      15204
+##   mean_count_susceptible mean_current_infected cumulative_infected
+## 1               18969.37              295.5397               22183
+## 2               42183.61              679.3135               45212
+## 3               17847.07              322.3929               13883
+## 4               15748.25              320.8512                6476
+##   cumulative_recovered mean_new_severe cumulative_severe population
+## 1                22183       0.2777778                21      50911
+## 2                45212       4.1626984               292     104366
+## 3                13883       8.8174603               479      32014
+## 4                 6476      19.2222222               479      15204
 ##   estimated_population   dt_admin total_partial_vaccinated
 ## 1               340355 2023-06-30                    22328
 ## 2               754988 2023-06-30                    62723
@@ -1076,10 +1115,16 @@ print(merged_final_alameda)</code></pre>
 ## 2         88.72975
 ## 3         89.42950
 ## 4         92.48372</code></pre>
-<p>Creating a descriptive table from the final merged dataset.</p>
-<pre class="r"><code># Assuming &#39;merged_final_alameda&#39; is your dataset
-
-# Define the columns for which you want to compute the descriptive statistics
+<p>We have successfully created the final merged dataset that has both
+the California morbidity data and the vaccination rate data as well.
+This dataset is now ready further analysis and visualization.</p>
+</div>
+</div>
+<div id="descriptive-table" class="section level3">
+<h3>Descriptive Table</h3>
+<p>We are now creating a descriptive table from the final merged
+dataset.</p>
+<pre class="r"><code># Defining the columns wanted to compute the descriptive statistics
 columns &lt;- c(
   &quot;total_partial_vaccinated&quot;,
   &quot;cumulative_fully_vaccinated&quot;,
@@ -1092,18 +1137,18 @@ columns &lt;- c(
   &quot;cumulative_up_to_date_vax&quot;
 )
 
-# Create an empty data frame
+# Creating an empty data frame
 result_table &lt;- data.frame(
   Measure = c(&quot;Min&quot;, &quot;1st Qu&quot;, &quot;Median&quot;, &quot;Mean&quot;, &quot;3rd Qu&quot;, &quot;Max&quot;, &quot;Standard Deviation&quot;)
 )
 
-# Loop through each column
+# Looping through each column
 for (col in columns) {
   # Compute summary statistics
   summary_stats &lt;- summary(merged_final_alameda[[col]])
   sd_value &lt;- sd(merged_final_alameda[[col]])
 
-  # Add the results to the data frame
+  # Adding the results to the data frame
   result_table[[col]] &lt;- c(summary_stats[1], summary_stats[2], summary_stats[3], mean(merged_final_alameda[[col]]), summary_stats[5], summary_stats[6], sd_value)
 }
 
@@ -1141,7 +1186,12 @@ print(result_table)</code></pre>
 ## 5                 161437.50
 ## 6                 218520.00
 ## 7                  62818.45</code></pre>
-<pre class="r"><code>kable(result_table, format = &quot;markdown&quot;, align = &quot;c&quot;, booktabs = TRUE) %&gt;%
+<p>The above printed table shows the descriptive statistics of some
+variablea that are present in the dataset.</p>
+<p>Now we are using Kable to create a more visually pleasing table of
+the descriptive statistics.</p>
+<pre class="r"><code># Creating the kable table. 
+kable(result_table, format = &quot;markdown&quot;, align = &quot;c&quot;, booktabs = TRUE) %&gt;%
   kable_styling(latex_options = c(&quot;striped&quot;, &quot;hold_position&quot;), full_width = FALSE)</code></pre>
 <pre><code>## Warning in kable_styling(., latex_options = c(&quot;striped&quot;, &quot;hold_position&quot;), :
 ## Please specify format in kable. kableExtra can customize either HTML or LaTeX
@@ -1260,6 +1310,36 @@ print(result_table)</code></pre>
 </tr>
 </tbody>
 </table>
+<p>For reference we have also provided a data dictionary for some of the
+elements in the dataset for additional clarity.</p>
+</div>
+<div id="data-dictionary" class="section level3">
+<h3>Data Dictionary</h3>
+<p><strong>Data dictionary:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>vaccination_rate</strong> - a numeric describing the
+cumulative number of people fully vaccinated over the estimated total
+population, times 100</p></li>
+<li><p><strong>mean_new_infections</strong> - a numeric describing the
+average number of new cases after monitoring started (akin to
+incidence)</p></li>
+<li><p><strong>mean_new_recovered</strong> - a numeric describing the
+average number of recovered patients after monitoring started (akin to
+incidence)</p></li>
+<li><p><strong>cumulative_infected</strong> - a numeric describing the
+total number of cases, including before monitoring started (akin to
+prevalence)</p></li>
+<li><p><strong>cumulative_recovered</strong> - a numeric describing the
+total number of recovered patients, including before monitoring started
+(akin to prevalence)</p></li>
+<li><p><strong>estimated population</strong> - a numeric describing the
+estimated total population of the county of interest</p></li>
+<li><p><strong>quarter</strong> - a numeric in the form of a date
+describing the quarter (three months starting on the date listed) for
+which the data was collected in the county of interest</p></li>
+</ol>
+</div>
+</div>
 </div>
 
 
