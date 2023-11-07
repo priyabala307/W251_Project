@@ -5,73 +5,15 @@ date: "2023-11-06"
 output: html_document
 ---
 
-#### **Data Cleaning: Milestone 3**
+# Project Milestone 3
 
-The sim_flu_CA.csv file and sim_flu_LACounty.csv file together represent simulated morbidity for the entire state of California. While it's certainly possible for data from different sources to adhere to a format standard, one of the challenges of working with secondary data is that it often does not work out that way. Therefore to prepare each dataset (milestone #3) so that they can be combined into one, whole state, dataset you will need to do the following:
+## PBHLTH W251
 
--   Flu morbidity datasets (from CA and LA County)
+### Priya Bala and Mihir Pandya
 
-    -   Recode column names, values, or formats that are in discordant (dates, etc)
+This scenario contains demographic and geographic information, morbidity, disease severity, and county and regional vaccination data from a simulated California flu season.
 
-    -   Combine morbidity datasets into a single dataset
-
-    -   Select demographic and geographic strata (s) of interest
-
-    -   Aggregate the data into a new dataframe to  include only one row per strata of interest
-
--   Vaccination dataset 
-
-    -   Recode values to be consistent with morbidity datasets so they can be joined
-
-    -   Select vaccination time frame that fits best with morbidity data and subset appropriately
-
-    -   Select demographic strata(s) of interest
-
-    -   Create a vaccination rate metric and summarize to include only one row per strata of interest
-
-### Clean each dataset and include descriptive statistics for relevant data elements
-
-Please turn in an html document created from an Rmd or Qmd with the following components:
-
--   Subset rows or columns, as needed
-
--   Create new variables needed for analysis (minimum 2)
-
-    -   New variables should be created based on existing columns; for example
-
-        -   Calculating a rate
-
-        -   Combining character strings
-
-        -   Aggregation
-
--   Clean variables needed for analysis (minimum 2)
-
-    -   Examples
-
-        -   Recode invalid values
-
-        -   Handle missing data
-
-        -   Recode categories
-
--   Data re-structured as needed (aggregated/summarized and/or pivoted)
-
--   Data dictionary based on clean dataset (minimum 4 data elements), including:
-
-    -   Variable name
-
-    -   Data type
-
-    -   Description
-
--   One or more tables with descriptive statistics for 4 data elements
-
--   Html output that is professionally prepared for presentation
-
-    -   Only the necessary information is outputted (you should suppress, for example, entire data frame outputs)
-
-    -   Use of headers and sub headers to create an organized document
+To start the cleaning of the 3 datasets provided for Scenario 1, we are installing and using all the necessary packages listed below.
 
 ```{r}
 # Adding all the packages that are necessary for the cleaning and importing done
@@ -84,7 +26,10 @@ library(knitr)
 library(kableExtra)
 ```
 
+In the below code chunk we are importing the 3 datasets provided for this scenario. Since the datasets are in a .csv format we are using the read_csv() command from the **readr** package.
+
 ```{r}
+
 # Importing the CA dataset and the LA dataset
 
 sim_CA <- read_csv("./sim_flu_CA.csv")
@@ -99,10 +44,21 @@ ca_vax <- read_csv("./ca_vax_rates_quarter.csv")
 head(ca_vax)
 ```
 
-Renaming the column names
+**The general idea for cleaning and combining the three dataset involves:**
+
+1.  Clean the sim_CA and the sim_LA datasets separately so that they can appended to one dataset.
+2.  Subset and aggregate the appended dataset to showcase the morbidity across the chosen sociodemographic characteristic.
+3.  Clean the ca_vax dataset separately and aggregate across chosen sociodemographic characteristic if necessary.
+4.  Merge the cleaned/aggregated ca_vax dataset with the appended dataset to create the final merged dataset for scenario 1.
+
+## Cleaning the California Morbidity datasets (sim_CA and sim_LA).
+
+#### **Step 1: Clean the sim_CA and the sim_LA datasets separately so that they can appended to one dataset.**
+
+The first step in cleaning the sim_CA and sim_LA datasets is **renaming** the column names to be in a **snake_case** format.
 
 ```{r}
-# Renaming the columns in the sim_LA dataset
+# Renaming the columns in the sim_LA dataset to a snake_case format
 
 sim_LA <- rename_with(sim_LA,
                       ~ tolower(
@@ -129,19 +85,24 @@ head(sim_CA)
 head(sim_LA)
 ```
 
-We are first going to append sim_CA and sim_LA
+We are now renaming the sim_LA dataset to match the column names in the sim_CA dataset and creating a new column for sim_LA to match sim_CA columns.
 
 ```{r}
+# Renaming the sim_LA dataset. 
 
 sim_LA <- sim_LA %>% rename(new_recovered = recovered_new, current_infected = infected_current, new_infections = dx_new, count_susceptible = susceptible, cumulative_infected = infected_cumulative, cumulative_recovered = recovered_cumulative, new_severe = severe_new, cumulative_severe = severe_cumulative, dt_diagnosis = dt_dx, age_cat = age_category, report_date = dt_report)
 
+# Renaming the sim_CA column time_int to unique_id to prevent the misinterpretation
+# of time_int as a date variable.  
 sim_CA <- sim_CA %>% rename(unique_id = time_int)
 
-# Creating county_name column for the LA dataset
+# Creating county_name column for the LA dataset because the sim_LA dataset did not
+# have a column dedicated for the county name. 
 
 sim_LA <- sim_LA %>% mutate(county_name = "Los Angeles County")
 head(sim_LA)
 
+# Printing the column names to compare the cleaned sim_LA and the sim_CA datasets. 
 colnames(sim_CA)
 colnames(sim_LA)
 ```
@@ -153,7 +114,8 @@ Now that the column have been renamed to create a consistent dataset, we are adj
 
 sim_LA$dt_diagnosis <- as.Date(sim_LA$dt_diagnosis, format = "%d%b%Y")
 
-# Converting race_ethnicity using case_when
+# Converting race_ethnicity using case_when, we are using the data dictionary provided
+# for scenario 1 by the instructors. 
 
 sim_CA <- sim_CA %>%
   mutate(race_eth = case_when(
@@ -166,18 +128,19 @@ sim_CA <- sim_CA %>%
     race_ethnicity == 7 ~ "Other/Unknown"
   ))
 
+# Printing the first few rows of the sim_LA and sim_CA dataset. 
 head(sim_LA)
 head(sim_CA)
 ```
 
 ```{r}
-# This chunk is combining both datasets to one dataset
+# This chunk is appending both datasets to one dataset using rbind(). 
 # Removing the columns in the sim_CA dataset that are not present
 # in the sim_LA dataset to combine both the datasets
 
 sim_CA_subset <- sim_CA[,-c(2,9,10,15,16)]
 
-# Reordering the columns
+# Reordering the columns to combine the two datasets easily. 
 
 sim_LA <- sim_LA[, names(sim_CA_subset)]
 colnames(sim_LA)
@@ -186,12 +149,15 @@ colnames(sim_CA_subset)
 # Appending both the datasets and combining sim_LA and sim_CA_subset
 
 sim_CA_LA <- rbind(sim_CA_subset, sim_LA)
+# Printing the first few columns of the appended dataset. 
 head(sim_CA_LA)
 ```
 
-We are choosing the age category as a sociodemographic category and we are focusing on
+Now that we have completed step 1 in the cleaning process, we are moving on to the next step.
 
-Alameda County.
+#### **Step 2: Subset and aggregate the appended dataset to showcase the morbidity across the chosen sociodemographic characteristic.**
+
+For our analysis, we are choosing **age category as a sociodemographic category** and we are focusing on **Alameda County as a geographical location**.
 
 ```{r}
 # Subsetting the combined dataset to only include age and Alameda County
@@ -208,6 +174,10 @@ head(sim_CA_LA_age_subset)
 str(sim_CA_LA_age_subset)
 ```
 
+#### Step 2 cont.: Aggregating the appended dataset to ensure that each age category has its own row for each of the columns.
+
+The aggregations were done by summarizing each of the columns in the way we thought were appropriate. For the raw counts of the morbidity in the dataset the summarizing measure "Mean" was used, whereas for cumulative measures and population the final measurement was taken.
+
 ```{r}
 
 sim_Cali_aggregated <- sim_CA_LA_age_subset %>%
@@ -216,11 +186,11 @@ sim_Cali_aggregated <- sim_CA_LA_age_subset %>%
   summarise(
     mean_new_infections = mean(new_infections),
     mean_new_recovered = mean(new_recovered),
-    count_susceptible = last(count_susceptible),
+    mean_count_susceptible = mean(count_susceptible),
     mean_current_infected = mean(current_infected),
     cumulative_infected = last(cumulative_infected),
     cumulative_recovered = last(cumulative_recovered),
-    new_severe = sum(new_severe),
+    mean_new_severe = mean(new_severe),
     cumulative_severe = last(cumulative_severe),
     population = last(population)
   )
@@ -228,7 +198,13 @@ sim_Cali_aggregated <- sim_CA_LA_age_subset %>%
 print(sim_Cali_aggregated)
 ```
 
-Cleaning the California vaccination dataset
+We have successfully cleaned and subsetted the sim_CA, sim_LA datasets and have combined them into one California dataset. We have also aggregated the dataset with regards to age and created an aggregated dataset as well.
+
+### Cleaning the California vaccination dataset
+
+#### Step 3: Clean the ca_vax dataset separately and aggregate across chosen sociodemographic characteristic if necessary.
+
+We are cleaning the ca_vax dataset by recoding the column names to follow snake_case format.
 
 ```{r}
 # Recoding the column names to match morbidity datasets to ready them to join
@@ -242,20 +218,28 @@ ca_vax_renamed <- rename_with(ca_vax,
                       ))
 ```
 
+The project milestone required us to create a subset within the ca_vax dataset with regards to a specific time frame. We are selecting a time frame, at April 1st, that matches the appended California morbidity dataset and subset with regards to sociodemographic and geographic characteristic.
+
 ```{r}
-# Selecting a time frame that matches the morbidity dataset and subset
+# Selecting a time frame that matches the morbidity dataset and subset: April 1st 
 
 ca_vax_time_frame <- subset(ca_vax_renamed, quarter == "2023-04-01")
 ```
 
 ```{r}
-# Selecting demographic strata of interest
+# Selecting age category as the demographic strata of interest to maintain the consistency with the morbidity dataset. 
 
 ca_demographics <- subset(ca_vax_time_frame, demographic_category == "Age Group")
+
+# Renaming the column to match the morbidity dataset. 
 
 ca_demographics <- ca_demographics %>%
   rename("age_cat" = "demographic_value")
 ```
+
+We are applying the same geographical (Alameda county) and sociodemographic characteristics (Age category) from the California morbidity dataset.
+
+We observed that the ca_demographics dataset had its age categories classified differently, to maintain consistency with the appended morbidity dataset we have reclassified the age categories using case_when() command.
 
 ```{r}
 # Remaining modifications to enable merge
@@ -271,9 +255,16 @@ ca_vax_county$age_cat = case_when(
     ca_vax_county$age_cat == "65+" ~ "65+")
 
 head(ca_vax_county)
+# Note that the reclassification has given us 3 entries under 0-17 years.  
 ```
 
+#### Step 3a: Subsetting and aggregating the ca_vax_county data
+
+Since the previous classifications of the age category had three subcategories that fit under 0-17 years, we are subsetting the above dataset into only 0-17 years and not included in the 0-17 years. We are conducting this subset to aggregate the 0-17 subset into one row rather than 3 rows.
+
 ```{r}
+
+# Subsetting the dataset into two datasets. 
 
 subset_data_age_17 <- ca_vax_county %>%
   filter(age_cat == "0-17")
@@ -288,10 +279,11 @@ head(ca_vax_county_age_no17)
 ca_vax_county_age_no17 <- ca_vax_county_age_no17[,-c(2,3)]
 ```
 
-```{r}
-# Assuming your dataset is named ca_vax_county, the following code
-# can be used to aggregate the data into a single row
+Now that we have subsetted the 0-17 year observations, we are aggregating the dataset to get one row for the 0-17 entry. For this dataset we have used the summary measure "**Sum**" to summarize all the columns in this dataset, because we are trying to combine/add all the three entries of 0-17 into one.
 
+```{r}
+
+# Aggregating the 0-17 dataset. 
 aggregated_data_17 <- subset_data_age_17 %>%
   group_by(age_cat) %>%
   summarise(
@@ -310,6 +302,9 @@ aggregated_data_17 <- subset_data_age_17 %>%
 
 head(aggregated_data_17)
 
+# After creating the aggregated dataset we are trying to combine it with the other subsetted
+# dataset (non 0-17 age categories) by matching the columns 
+
 order <- c("county_name", "age_cat", "estimated_population", "dt_admin", "total_partial_vaccinated", "cumulative_fully_vaccinated", "cumulative_at_least_one_dose", "cumulative_unvaccinated", "suppress_data", "cumulative_up_to_date_vax", "quarter")
 
 # Reorder the columns of the first dataset
@@ -319,18 +314,22 @@ head(aggregated_data_17)
 
 ca_vax_county_final <- rbind(aggregated_data_17, ca_vax_county_age_no17)
 print(ca_vax_county_final)
+
+# The final ca_vax_county dataset has been created. This dataset only has one row per age category. This is what we want to ensure we can merge it with the California morbidity dataset.
 ```
 
-We are calculating the vaccination rate for the California vaccination dataset
+#### Step 3b: We are calculating the vaccination rate for the California vaccination dataset
 
 ```{r}
-# Creating vaccination rate metric
+# Creating vaccination rate metric for the final ca_vax_county dataset. 
 
 ca_vax_county_final <- ca_vax_county_final %>%
   mutate(vaccination_rate = (cumulative_fully_vaccinated / estimated_population) * 100)
 
 head(ca_vax_county_final)
 ```
+
+#### Step 4: Merge the cleaned/aggregated ca_vax dataset with the appended dataset to create the final merged dataset for scenario 1.
 
 Now that we have created an aggregated ca_vax dataset that is only for Alameda County in the April 1st 2023 quarter with age categories as the chosen demographic characteristic, we can combine the California vaccine dataset with the simulated dataset.
 
@@ -350,10 +349,13 @@ merged_final_alameda <- merge(sim_Cali_aggregated, ca_vax_county_final, by = "ag
 print(merged_final_alameda)
 ```
 
-Doing some final cleaning for the dataset
+The final combined dataset has been created and printed above, but we need to perform some additional cleaning.
+
+#### Step 4a: Doing some final cleaning for the dataset
 
 ```{r}
 
+# The final dataset has some additional columns that can be renamed/removed. 
 merged_final_alameda <- merged_final_alameda %>% rename(county_name = county_name.x)
 
 merged_final_alameda <- merged_final_alameda[,-c(12)]
@@ -369,10 +371,13 @@ merged_final_alameda <- merged_final_alameda[,c(2,1,3:21)]
 print(merged_final_alameda)
 ```
 
-Creating a descriptive table from the final merged dataset
+We have successfully created the final merged dataset that has both the California morbidity data and the vaccination rate data as well. This dataset is now ready further analysis and visualization.
+
+### Descriptive Table
+
+We are now creating a descriptive table from the final merged dataset.
 
 ```{r}
-# Assuming "merged_final_alameda" is the dataset
 
 # Defining the columns wanted to compute the descriptive statistics
 columns <- c(
@@ -406,32 +411,32 @@ for (col in columns) {
 print(result_table)
 ```
 
-```{r}
+The above printed table shows the descriptive statistics of some variablea that are present in the dataset.
 
+Now we are using Kable to create a more visually pleasing table of the descriptive statistics.
+
+```{r}
+# Creating the kable table. 
 kable(result_table, format = "markdown", align = "c", booktabs = TRUE) %>%
   kable_styling(latex_options = c("striped", "hold_position"), full_width = FALSE)
 ```
 
-Data dictionary (sample):
+For reference we have also provided a data dictionary for some of the elements in the dataset for additional clarity.
 
-1. vaccination_rate - a numeric describing the cumulative number of people
-fully vaccinated over the estimated total population, times 100
+### Data Dictionary
 
-2. mean_new_infections - a numeric describing the average number of new cases
-after monitoring started (akin to incidence)
+**Data dictionary:**
 
-3. mean_new_recovered - a numeric describing the average number of recovered patients
-after monitoring started (akin to incidence)
+1.  **vaccination_rate** - a numeric describing the cumulative number of people fully vaccinated over the estimated total population, times 100
 
-4. cumulative_infected - a numeric describing the total number of cases,
-including before monitoring started (akin to prevalence)
+2.  **mean_new_infections** - a numeric describing the average number of new cases after monitoring started (akin to incidence)
 
-5. cumulative_recovered - a numeric describing the total number of recovered patients,
-including before monitoring started (akin to prevalence)
+3.  **mean_new_recovered** - a numeric describing the average number of recovered patients after monitoring started (akin to incidence)
 
-6. estimated population - a numeric describing the estimated total population
-of the county of interest
+4.  **cumulative_infected** - a numeric describing the total number of cases, including before monitoring started (akin to prevalence)
 
-7. quarter - a numeric in the form of a date describing the quarter (three months
-starting on the date listed) for which the data was collected in the county of
-interest
+5.  **cumulative_recovered** - a numeric describing the total number of recovered patients, including before monitoring started (akin to prevalence)
+
+6.  **estimated population** - a numeric describing the estimated total population of the county of interest
+
+7.  **quarter** - a numeric in the form of a date describing the quarter (three months starting on the date listed) for which the data was collected in the county of interest
