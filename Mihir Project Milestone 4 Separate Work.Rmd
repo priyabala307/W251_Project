@@ -1,0 +1,40 @@
+---
+title: "Mihir Project Milestone 4 Separate Work"
+output: html_document
+date: "2023-11-18"
+---
+
+```{r}
+
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+```
+
+```{r}
+
+data <- read_csv("./Final_aggregated_data_Milestone4.csv")
+
+data_renamed <- rename_with(data,
+                      ~ toupper(
+                        gsub("_",
+                             " ",
+                             .x,
+                             fixed = TRUE)
+                      ))
+```
+
+```{r}
+
+new_kable <- kable(data_renamed, format = "markdown", caption = "Influenza Cases and COVID-19 Vaccination Data from Alameda County Second Quarter 2023", align = "c", booktabs = TRUE) %>%
+  kable_styling(latex_options = c("striped", "hold_position"), full_width = FALSE)
+
+add_footnote(
+  new_kable,
+  label = c("This table shows a variety of statistics pertaining to influenza (flu) cases and COVID-19 vaccination in Alameda County in the second quarter of calendar year 2023."),
+  notation = "alphabet",
+  threeparttable = FALSE,
+  escape = TRUE)
+```
