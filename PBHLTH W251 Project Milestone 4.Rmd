@@ -5,7 +5,7 @@ date: "2023-11-20"
 output: html_document
 ---
 
-# Project Milestone 4 
+# Project Milestone 4
 
 ## PBHLTH W251
 
@@ -60,7 +60,7 @@ final_clean_data <- final_clean_data %>%
 print(final_clean_data)
 ```
 
-### Step 2: Creating the graph/plot based on final cleaned aggregated dataset. 
+### Step 2: Creating the graph/plot based on final cleaned aggregated dataset.
 
 Below, I am creating a scatterplot to look at the association between the total number of severe flu cases and the COVID-19 vaccination rate by age categories in Alameda county during April 1st quarter. For this plot, I am using the "Cumulative Severe" column which was created in Milestone 3 as an summarized measure that was aggregated for each age category; and the "Vaccination Rate" variable that was also created in Milestone 3 and aggregated for each age category.
 
@@ -93,10 +93,9 @@ This scatter plot visualizes the relationship between the cumulative severe case
 
 4.  **Highlight on 65 and Older Category:** Notably, the "65+" age category emerges with the highest total severe flu cases, emphasizing that individuals aged 65 and older are more vulnerable to severe flu. Despite the elevated risk, this age category also demonstrates a higher COVID-19 vaccination rate, reflecting an awareness of the importance of vaccination for older individuals who may face greater health risks.
 
-**Overall Implications:**
-The plot suggests a positive association between age, severe flu cases, and COVID-19 vaccination rates.
+**Overall Implications:** The plot suggests a positive association between age, severe flu cases, and COVID-19 vaccination rates.
 
-### Step 3: Creating a table representing the final dataset 
+### Step 3: Creating a table representing the final dataset
 
 ```{r, warning=FALSE message=FALSE}
 
