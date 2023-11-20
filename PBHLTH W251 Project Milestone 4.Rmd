@@ -1,0 +1,95 @@
+---
+title: "PBHLTH W251 Project Milestone 4"
+author: "Priya Bala and Mihir Pandya"
+date: "2023-11-20"
+output: html_document
+---
+
+# Project Milestone 4 
+
+## PBHLTH W251
+
+### Priya Bala and Mihir Pandya
+
+Scenario 1: This scenario contains demographic and geographic information, morbidity, disease severity, and county and regional vaccination data from a simulated California flu season.
+
+At the end of Milestone 3 we have created a final merged dataset with **aggregated measures of flu severity and COVID vaccination rates for the April 1st quarter by age categories**. We exported the final dataset and imported it again in this html document. For reference the code used to create the final merged data is added at the end of the document as a comment.
+
+Graph/ Plot Visualizations were done by Priya Bala and the table was created by Mihir Pandya.
+
+## Step 1: Importing the final dataset
+
+```{r warning=FALSE message=FALSE}
+# First we are adding all the packages that are needed to create the visualizations and importing the final dataset. 
+
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+library(ggplot2)
+```
+
+```{r warning=FALSE message=FALSE}
+# In the below code chunk we are importing the 3 datasets provided for this scenario. Since # the datasets are in a .csv format we are using the read_csv() command from the readr 
+# package.
+
+final_data <- read_csv("./Final_aggregated_data_Milestone4.csv")
+
+final_data_renamed <- rename_with(final_data,
+                      ~ toupper(
+                        gsub("_",
+                             " ",
+                             .x,
+                             fixed = TRUE)
+                      ))
+
+print(final_data_renamed)
+```
+
+Now that we have imported our final dataset, we are cleaning the final dataset slightly to make the visualizations easier.
+
+```{r warning=FALSE message=FALSE}
+
+# Remove the 12th column from final_data_renamed
+final_clean_data <- final_data_renamed[,-12]
+
+# Rename the "COUNTY NAME.X" column to "COUNTY NAME"
+final_clean_data <- final_clean_data %>%
+  rename(`COUNTY NAME` = `COUNTY NAME.X`)
+print(final_clean_data)
+```
+
+### Step 2: Creating the graph/plot based on final cleaned aggregated dataset. 
+
+```{r}
+
+ggplot(final_clean_data, aes(x = `CUMULATIVE SEVERE`, y = `VACCINATION RATE`, color = `AGE CAT`)) +
+  geom_point(size = 3) +  # Adjust the size of the points as needed
+  geom_text(aes(label = paste(round(`CUMULATIVE SEVERE`, 2), ", ", round(`VACCINATION RATE`, 2))),
+            position = position_nudge(y = 2), size = 3, show.legend = FALSE) +  # Nudge labels up
+  geom_text(data = subset(final_clean_data, `AGE CAT` == "0-17"),
+            aes(label = paste(round(`CUMULATIVE SEVERE`, 2), ", ", round(`VACCINATION RATE`, 2))),
+            position = position_nudge(x = -5), size = 3, show.legend = FALSE, hjust = 5) +  # Move label to the left
+  labs(title = " Flu Severity vs COVID-19 Vaccination Rates by Age Category in 
+       Alameda County",
+       x = "Cumulative Severe Flu Cases",
+       y = "Vaccination Rate") +
+  theme_minimal() + theme(axis.line = element_line(size = 0.5))
+
+```
+
+Step 3: Creating a table representing the final dataset
+
+```{r}
+
+new_kable <- kable(data_renamed, format = "markdown", caption = "Influenza Cases and COVID-19 Vaccination Data from Alameda County Second Quarter 2023", align = "c", booktabs = TRUE) %>%
+  kable_styling(latex_options = c("striped", "hold_position"), full_width = FALSE)
+
+add_footnote(
+  new_kable,
+  label = c("This table shows a variety of statistics pertaining to influenza (flu) cases and COVID-19 vaccination in Alameda County in the second quarter of calendar year 2023."),
+  notation = "alphabet",
+  threeparttable = FALSE,
+  escape = TRUE)
+```
