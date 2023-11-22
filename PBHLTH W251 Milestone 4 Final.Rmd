@@ -13,7 +13,7 @@ output: html_document
 
 [**Scenario 1:**]{.underline} This scenario contains demographic and geographic information, morbidity, disease severity, and county and regional vaccination data from a simulated California flu season.
 
-At the end of the third project milestone we have created a final merged dataset with **aggregated measures of flu severity and COVID vaccination rates for the second quarter of calendar year 2023 by age categories**. We exported the final dataset and imported it again in this html document. For reference the code used to create the final merged data is added at the end of the document as a comment.
+At the end of the third project milestone we have created a final merged dataset with **aggregated measures of flu severity and COVID vaccination rates for the second quarter (April 1st) of calendar year 2023 by age categories**. We exported the final dataset and imported it again in this html document. For reference the code used to create the final merged data is added at the end of the document as a comment.
 
 Graph/plot visualization was done by Priya Bala and the table was created by Mihir Pandya.
 
@@ -81,7 +81,7 @@ ggplot(final_clean_data, aes(x = `CUMULATIVE SEVERE`, y = `VACCINATION RATE`, co
        x = "Cumulative Severe Flu Cases",
        y = "Vaccination Rate",
        caption = "Figure 1: This plot shows the cumulative number of severe flu cases and the COVID-19 vaccination rates across 
-different age categories in Alameda county during the April 1st 2023 quarter. The plot shows that as age increases
+different age categories in Alameda county during the second quarter of 2023. The plot shows that as age increases
 the total number of severe flu cases and the COVID-19 vaccination rate increased as well.") +
   theme_minimal() + theme(axis.line = element_line(size = 0.5),
                           plot.caption = element_text(hjust = 0))
