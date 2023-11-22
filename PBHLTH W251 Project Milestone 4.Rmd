@@ -77,13 +77,17 @@ ggplot(final_clean_data, aes(x = `CUMULATIVE SEVERE`, y = `VACCINATION RATE`, co
   labs(title = " Flu Severity vs COVID-19 Vaccination Rates by Age Category in 
        Alameda County for April 1st 2023 quarter",
        x = "Cumulative Severe Flu Cases",
-       y = "Vaccination Rate") +
-  theme_minimal() + theme(axis.line = element_line(size = 0.5))
+       y = "Vaccination Rate",
+       caption = "Figure 1: This plot shows the cumulative number of severe flu cases and the COVID-19 vaccination rates across 
+different age categories in Alameda county during the April 1st 2023 quarter. The plot shows that as age increases
+the total number of severe flu cases and the COVID-19 vaccination rate increased as well.") +
+  theme_minimal() + theme(axis.line = element_line(size = 0.5),
+                          plot.caption = element_text(hjust = 0))
 ```
 
 [**Interpretation of the plot:**]{.underline}
 
-This scatterplot visualizes the relationship between the cumulative severe cases of flu and the COVID-19 vaccination rates across different age categories in Alameda County for the second quarter of calendar year 2023  Each point represents a specific age category, with the x-axis representing the cumulative severe flu cases and the y-axis representing the COVID-19 vaccination rate. The color of each point corresponds to different age categories.
+This scatterplot visualizes the relationship between the cumulative severe cases of flu and the COVID-19 vaccination rates across different age categories in Alameda County for the second quarter of calendar year 2023 Each point represents a specific age category, with the x-axis representing the cumulative severe flu cases and the y-axis representing the COVID-19 vaccination rate. The color of each point corresponds to different age categories.
 
 1.  **Age and Flu Severity:** The plot reveals a clear correlation between age and the total number of severe flu cases. In particular, the "0-17" age category exhibits the lowest number of severe flu cases, indicating that younger individuals within this category have experienced fewer instances of severe flu.
 
