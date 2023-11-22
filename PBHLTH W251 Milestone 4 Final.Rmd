@@ -1,0 +1,140 @@
+---
+title: "PBHLTH W251 Milestone 4 - Final"
+author: "Priya Bala and Mihir Pandya"
+date: "2023-11-22"
+output: html_document
+---
+
+# Project Milestone 4
+
+## PBHLTH W251
+
+### Priya Bala and Mihir Pandya
+
+[**Scenario 1:**]{.underline} This scenario contains demographic and geographic information, morbidity, disease severity, and county and regional vaccination data from a simulated California flu season.
+
+At the end of Milestone 3 we have created a final merged dataset with **aggregated measures of flu severity and COVID vaccination rates for the April 1st quarter by age categories**. We exported the final dataset and imported it again in this html document. For reference the code used to create the final merged data is added at the end of the document as a comment.
+
+Graph/ Plot Visualization was done by Priya Bala and the table was created by Mihir Pandya.
+
+### Step 1: Importing the final dataset
+
+```{r, warning=FALSE message=FALSE}
+# First we are adding all the packages that are needed to create the visualizations and importing the final dataset. 
+
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+library(ggplot2)
+```
+
+```{r warning=FALSE message=FALSE}
+# In the below code chunk we are importing the 3 datasets provided for this scenario. Since # the datasets are in a .csv format we are using the read_csv() command from the readr 
+# package.
+
+final_data <- read_csv("./Final_aggregated_data_Milestone4.csv")
+
+final_data_renamed <- rename_with(final_data,
+                      ~ toupper(
+                        gsub("_",
+                             " ",
+                             .x,
+                             fixed = TRUE)
+                      ))
+
+print(final_data_renamed)
+```
+
+Now that we have imported our final dataset, we are cleaning the final dataset slightly to make the visualizations easier.
+
+```{r, warning=FALSE message=FALSE}
+
+# Remove the 12th column from final_data_renamed
+final_clean_data <- final_data_renamed[,-12]
+
+# Rename the "COUNTY NAME.X" column to "COUNTY NAME"
+final_clean_data <- final_clean_data %>%
+  rename(`COUNTY NAME` = `COUNTY NAME.X`)
+print(final_clean_data)
+```
+
+### Step 2: Creating the graph/plot based on final cleaned aggregated dataset.
+
+Below, I am creating a scatterplot to look at the association between the total number of severe flu cases and the COVID-19 vaccination rate by age categories in Alameda county during April 1st quarter. For this plot, I am using the "Cumulative Severe" column which was created in Milestone 3 as an summarized measure that was aggregated for each age category; and the "Vaccination Rate" variable that was also created in Milestone 3 and aggregated for each age category.
+
+```{r, echo = TRUE warning=FALSE message=FALSE}
+
+ggplot(final_clean_data, aes(x = `CUMULATIVE SEVERE`, y = `VACCINATION RATE`, color = `AGE CAT`)) +
+  geom_point(size = 3) +  # Adjust the size of the points as needed
+  geom_text(aes(label = paste(round(`CUMULATIVE SEVERE`, 2), ", ", round(`VACCINATION RATE`, 2))),
+            position = position_nudge(y = 2), size = 3, show.legend = FALSE) +  # Nudge labels up
+  geom_text(data = subset(final_clean_data, `AGE CAT` == "0-17"),
+            aes(label = paste(round(`CUMULATIVE SEVERE`, 2), ", ", round(`VACCINATION RATE`, 2))),
+            position = position_nudge(x = -5), size = 3, show.legend = FALSE, hjust = 5) +  # Move label to the left
+  labs(title = " Flu Severity vs COVID-19 Vaccination Rates by Age Category in 
+       Alameda County for April 1st 2023 quarter",
+       x = "Cumulative Severe Flu Cases",
+       y = "Vaccination Rate",
+       caption = "Figure 1: This plot shows the cumulative severe flu cases and the COVID-19 vaccination rate by age in Alameda 
+       county during the April 1st quarter. As age increases the number of severe flu cases and the COVID-19
+      vaccination rate increases in Alameda county.") + theme_minimal() + theme(axis.line = element_line(size = 0.5), plot.caption = element_text(hjust = 0))
+
+
+
+```
+
+[**Interpretation of the plot:**]{.underline}
+
+This scatter plot visualizes the relationship between the cumulative severe cases of flu and the COVID-19 vaccination rates across different age categories in Alameda county for April 1st 2023 quarter. Each point represents a specific age category, with the x-axis representing the cumulative severe flu cases and the y-axis representing the COVID-19 vaccination rate. The color of each point corresponds to different age categories.
+
+1.  **Age and Flu Severity:** The plot reveals a clear correlation between age and the total number of severe flu cases. In particular, the "0-17" age category exhibits the lowest number of severe flu cases, indicating that younger individuals within this category have experienced fewer instances of severe flu.
+
+2.  **Age and Vaccination Rates:** Simultaneously, the plot depicts a positive association between age and COVID-19 vaccination rates. The "0-17" age category stands out with the lowest vaccination rate, suggesting that younger individuals within this group have lower COVID-19 vaccination coverage.
+
+3.  **Age and Flu Severity vs. Vaccination Rate:** As age increases, both the total number of severe flu cases and the COVID-19 vaccination rate tend to rise. This suggests a potential pattern where older age groups experience more severe flu cases, possibly due to various factors such as increased susceptibility or a higher likelihood of complications. Correspondingly, the vaccination rate tends to be higher in older age groups, indicating a proactive response to mitigate the impact of infectious diseases.
+
+4.  **Highlight on 65 and Older Category:** Notably, the "65+" age category emerges with the highest total severe flu cases, emphasizing that individuals aged 65 and older are more vulnerable to severe flu. Despite the elevated risk, this age category also demonstrates a higher COVID-19 vaccination rate, reflecting an awareness of the importance of vaccination for older individuals who may face greater health risks.
+
+**Overall Implications:** The plot suggests a positive association between age, severe flu cases, and COVID-19 vaccination rates.
+
+### Step 3: Creating a table representing the final dataset
+
+```{r, warning=FALSE message=FALSE}
+
+new_kable <- kable(final_clean_data, format = "markdown", caption = "Influenza Cases and COVID-19 Vaccination Data from Alameda County Second Quarter 2023", align = "c", booktabs = TRUE) %>%
+  kable_styling(latex_options = c("striped", "hold_position"), full_width = FALSE)
+
+add_footnote(
+  new_kable,
+  label = c("This table shows a variety of statistics pertaining to influenza (flu) cases and COVID-19 vaccination in Alameda County in the second quarter of calendar year 2023."),
+  notation = "alphabet",
+  threeparttable = FALSE,
+  escape = TRUE)
+```
+
+From Milestone 3 we have added the final code for creating the merged datasets that are used in this milestone. We have made all the coding elements as comments, because we would have to add all the previous steps and multiple datasets before and after cleaning to this html document.
+
+```{r chunk_name, include=FALSE}
+# Combining the two final datasets to create one final dataset
+
+# The ca_vax_county_final dataset has its county_name variables as Alameda
+# rather than Alameda County, thus we are adding additional cleaning
+# to make the merger of the combined datasets easier
+
+#### CODE BELOW - made into comment form #### 
+
+# ca_vax_county_final <- ca_vax_county_final %>% mutate(county_name = case_when(
+#    county_name == "Alameda" ~ "Alameda County"))
+
+# Merging the two final datasets
+
+# merged_final_alameda <- merge(sim_Cali_aggregated, ca_vax_county_final, by = "age_cat",
+# all = TRUE)
+# print(merged_final_alameda)
+
+##### The code for the final merge is mentioned above ##### 
+
+# In the below R chunks we have imported the final dataset and added all the necessary packages that are required for Milestone 4. For additional merge steps and aggregation please refer to Milestone 3. 
+```
