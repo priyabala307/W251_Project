@@ -118,4 +118,16 @@ add_footnote(
 
 ### Code used in Milestone 3 
 
-We have added the code used for the final merge below. We have made all the code as comments
+We have added the code used for the final merge below. We have made all the code as comments below because we would have had to add many cleaned/uncleaned datasets and the initial dataset provided by the instructors to show the final merged document. If needed please use our Milestone 3 as reference to get more information on the aggregation and the final dataset.
+
+```{r}
+# Merging the two final datasets to create one final dataset
+
+### The code is below ### 
+
+# merged_final_alameda <- merge(sim_Cali_aggregated, ca_vax_county_final, by = "age_cat", 
+# all = TRUE)
+# print(merged_final_alameda)
+
+### The above code only shows the final merge of the simulated CA flu severity/ morbidity dataset and the covid vaccination dataset. ### 
+```
