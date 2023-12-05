@@ -1,0 +1,7 @@
+---
+title: "Mihir Project Milestone 6 (Final Submission) Separate Work"
+output: html_document
+date: "2023-12-05"
+---
+
+In recent years, given the pandemic of COVID-19, vaccination rates have risen since the introduction of COVID-19 vaccines at the end of calendar year 2020. This is true for the state of California, where vaccination data across all of the states 58 counties ( stratified by age) can be used for infectious diseases surveillance by the California Department of Public Health. Specifically, analysis of the aforementioned data could reveal if COVID-19 vaccination rates have any impact on flu vaccination rates and/or severity. This can be done by examining data for flu cases and severity across the entire state stratified by demographic categories (age/race/sex), including in the states largest county, Los Angeles.
