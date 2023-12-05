@@ -4,22 +4,22 @@ author: "Priya Bala and Mihir Pandya"
 date: "2023-11-20"
 output: html_document
 ---
-  
-  # Project Milestone 4
-  
-  ## PBHLTH W251
-  
-  ### Priya Bala and Mihir Pandya
-  
-  [**Scenario 1:**]{.underline} This scenario contains demographic and geographic information, morbidity, disease severity, and county and regional vaccination data from a simulated California flu season.
 
-At the end of the third project milestone we have created a final merged dataset with **aggregated measures of flu severity and COVID vaccination rates for the second quarter of calendar year 2023 by age categories**. We exported the final dataset and imported it again in this html document. For reference the code used to create the final merged data is added at the end of the document as a comment.
+# Project Milestone 4
+
+## PBHLTH W251
+
+### Priya Bala and Mihir Pandya
+
+[**Scenario 1:**]{.underline} This scenario contains demographic and geographic information, morbidity, disease severity, and county and regional vaccination data from a simulated California flu season.
+
+At the end of the third project milestone we have created a final merged dataset with **aggregated measures of flu severity and COVID vaccination rates for the second quarter (April 1st) of calendar year 2023 by age categories**. We exported the final dataset and imported it again in this html document. For reference the code used to create the final merged data is added at the end of the document as a comment.
 
 Graph/plot visualization was done by Priya Bala and the table was created by Mihir Pandya.
 
 ### Step 1: Importing the final dataset
 
-```{r, warning=FALSE message=FALSE}
+```{r, warning=FALSE, message=FALSE}
 
 # First we are adding all the packages that are needed to create the visualizations and importing the final dataset.
 
@@ -31,7 +31,7 @@ library(kableExtra)
 library(ggplot2)
 ```
 
-```{r warning=FALSE message=FALSE}
+```{r warning=FALSE, message=FALSE}
 
 # In the below code chunk we are importing the three datasets provided for this scenario. For datasets in a .csv format we are using the read_csv() command from the readr package.
 
@@ -46,11 +46,13 @@ final_data_renamed <- rename_with(final_data,
                                   ))
 
 print(final_data_renamed)
+
+# We are using print() command throughout this document because our dataset only has 4 rows. 
 ```
 
 Now that we have imported our final dataset, we are cleaning the final dataset slightly to make the visualizations easier.
 
-```{r, warning=FALSE message=FALSE}
+```{r, warning=FALSE, message=FALSE}
 
 # Removing the 12th column from final_data_renamed
 final_clean_data <- final_data_renamed[,-12]
@@ -63,9 +65,9 @@ print(final_clean_data)
 
 ### Step 2: Creating the graph/plot based on final cleaned aggregated dataset.
 
-Below, a scatterplot is being created to look at the association between the total number of severe flu cases and the COVID-19 vaccination rate by age categories in Alameda County during the second quarter of calendar year 2023. For this plot, the "Cumulative Severe" column is being used (created in the third project mileston)e as a summarized measure that was aggregated for each age category; the "Vaccination Rate" variable that was also created in the third project milestone and aggregated for each age category.
+Below, a scatterplot is being created to look at the association between the total number of severe flu cases and the COVID-19 vaccination rate by age categories in Alameda County during the second quarter of calendar year 2023. For this plot, the "Cumulative Severe" column is being used (created in the third project milestone) as a summarized measure that was aggregated for each age category; the "Vaccination Rate" variable that was also created in the third project milestone and aggregated for each age category.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, warning=FALSE, message=FALSE}
 
 ggplot(final_clean_data, aes(x = `CUMULATIVE SEVERE`, y = `VACCINATION RATE`, color = `AGE CAT`)) +
   geom_point(size = 3) +  # Adjusting the size of the points as needed
@@ -75,15 +77,19 @@ ggplot(final_clean_data, aes(x = `CUMULATIVE SEVERE`, y = `VACCINATION RATE`, co
             aes(label = paste(round(`CUMULATIVE SEVERE`, 2), ", ", round(`VACCINATION RATE`, 2))),
             position = position_nudge(x = -5), size = 3, show.legend = FALSE, hjust = 5) +  # Moving label to the left
   labs(title = " Flu Severity vs COVID-19 Vaccination Rates by Age Category in 
-       Alameda County for April 1st 2023 quarter",
+       Alameda County for the second quarter of 2023",
        x = "Cumulative Severe Flu Cases",
-       y = "Vaccination Rate") +
-  theme_minimal() + theme(axis.line = element_line(size = 0.5))
+       y = "Vaccination Rate",
+       caption = "Figure 1: This plot shows the cumulative number of severe flu cases and the COVID-19 vaccination rates across 
+different age categories in Alameda county during the second quarter of 2023. The plot shows that as age increases
+the total number of severe flu cases and the COVID-19 vaccination rate increased as well.") +
+  theme_minimal() + theme(axis.line = element_line(size = 0.5),
+                          plot.caption = element_text(hjust = 0))
 ```
 
-[**Interpretation of the plot:**]{.underline}
+[**Specific Interpretation of the plot:**]{.underline}
 
-This scatterplot visualizes the relationship between the cumulative severe cases of flu and the COVID-19 vaccination rates across different age categories in Alameda County for the second quarter of calendar year 2023  Each point represents a specific age category, with the x-axis representing the cumulative severe flu cases and the y-axis representing the COVID-19 vaccination rate. The color of each point corresponds to different age categories.
+This scatterplot visualizes the relationship between the cumulative severe cases of flu and the COVID-19 vaccination rates across different age categories in Alameda County for the second quarter of calendar year 2023 Each point represents a specific age category, with the x-axis representing the cumulative severe flu cases and the y-axis representing the COVID-19 vaccination rate. The color of each point corresponds to different age categories.
 
 1.  **Age and Flu Severity:** The plot reveals a clear correlation between age and the total number of severe flu cases. In particular, the "0-17" age category exhibits the lowest number of severe flu cases, indicating that younger individuals within this category have experienced fewer instances of severe flu.
 
@@ -93,11 +99,11 @@ This scatterplot visualizes the relationship between the cumulative severe cases
 
 4.  **Highlight on 65 and Older Category:** Notably, the "65+" age category emerges with the highest total severe flu cases, emphasizing that individuals aged 65 and older are more vulnerable to severe flu. Despite the elevated risk, this age category also demonstrates a higher COVID-19 vaccination rate, reflecting an awareness of the importance of vaccination for older individuals who may face greater health risks.
 
-**Overall Implications:** The plot suggests a positive association between age, severe flu cases, and COVID-19 vaccination rates.
+**Overall Interpretation:** The plot suggests a positive association between age, severe flu cases, and COVID-19 vaccination rates.
 
 ### Step 3: Creating a table representing the final dataset
 
-```{r, warning=FALSE message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=TRUE}
 
 # Making a kable
 new_kable <- kable(final_clean_data, format = "markdown", caption = "Influenza Cases and COVID-19 Vaccination Data from Alameda County Second Quarter 2023", align = "c", booktabs = TRUE) %>%
@@ -110,4 +116,20 @@ add_footnote(
   notation = "alphabet",
   threeparttable = FALSE,
   escape = TRUE)
+```
+
+### Code used in Milestone 3
+
+We have added the code used for the final merge below. We have made all the code as comments below because we would have had to add many cleaned/uncleaned datasets and the initial dataset provided by the instructors to show the final merged document. If needed please use our Milestone 3 as reference to get more information on the aggregation and the final dataset.
+
+```{r, warning=FALSE, message=FALSE}
+# Merging the two final datasets to create one final dataset
+
+### The code is below ### 
+
+# merged_final_alameda <- merge(sim_Cali_aggregated, ca_vax_county_final, by = "age_cat", 
+# all = TRUE)
+# print(merged_final_alameda)
+
+### The above code only shows the final merge of the simulated CA flu severity/ morbidity dataset and the covid vaccination dataset. ### 
 ```
