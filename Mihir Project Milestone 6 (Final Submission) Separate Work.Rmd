@@ -4,4 +4,10 @@ output: html_document
 date: "2023-12-05"
 ---
 
-In recent years, given the pandemic of COVID-19, vaccination rates have risen since the introduction of COVID-19 vaccines at the end of calendar year 2020. This is true for the state of California, where vaccination data across all of the states 58 counties ( stratified by age) can be used for infectious diseases surveillance by the California Department of Public Health. Specifically, analysis of the aforementioned data could reveal if COVID-19 vaccination rates have any impact on flu vaccination rates and/or severity. This can be done by examining data for flu cases and severity across the entire state stratified by demographic categories (age/race/sex), including in the states largest county, Los Angeles.
+Problem:
+
+In recent years, given the pandemic of COVID-19, vaccination rates have risen since the introduction of COVID-19 vaccines at the end of calendar year 2020. This is true for the state of California, where vaccination data across all of the states 58 counties (stratified by age) can be used for infectious diseases surveillance by the California Department of Public Health. Specifically, analysis of the aforementioned data could reveal if COVID-19 vaccination rates have any impact on flu vaccination rates. This can be done by examining data for flu cases and severity across the entire state stratified by demographic categories (age/race/sex), including in the states largest county, Los Angeles.
+
+Methods:
+
+The three aforementioned data sources used as the basis for this analysis between COVID-19 vaccination rates and those for the flu are the following: weekly data for flu cases and severity by demographic (age/race/sex) categories across all California counties except Los Angeles (sim_flu_CA.csv), similar data as sim_flu_CA.csv except just for Los Angeles County (sim_flu_LACounty.csv), and quarterly COVID-19 vaccination data by age for all of California's 58 counties (ca_vax_rates_quarter.csv). Both the sim_flu_CA.csv and sim_flu_LACounty.csv span the entirety of calendar year 2022 and calendar year 2023. ca_vax_rates_quarter.csv includes that and starts as far back as the third quarter of calendar year 2020. All three of these were read in to begin the data analysis process.
