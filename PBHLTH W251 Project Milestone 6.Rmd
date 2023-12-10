@@ -1,35 +1,35 @@
 ---
 title: "PBHLTH W251 Milestone 6"
 author: "Priya Bala and Mihir Pandya"
-date: "2023-12-08"
+date: "2023-12-10"
 output: html_document
 ---
 
-#  Age-Specific Dynamics of Influenza Cases and COVID-19 Vaccination in Alameda County 
+#  Age-Specific Dynamics of Flu Cases and COVID-19 Vaccination in Alameda County
 
-## Problem Statement 
+## Problem Statement
 
-In recent years, given the pandemic of COVID-19, vaccination rates have risen since the introduction of COVID-19 vaccines at the end of calendar year 2020. This is true for the state of California, where vaccination data across all of the states 58 counties (stratified by age) can be used for infectious diseases surveillance by the California Department of Public Health. Specifically, analysis of the aforementioned data could reveal if COVID-19 vaccination rates have any impact on flu vaccination rates. This can be done by examining data for flu cases and severity across the entire state stratified by demographic categories (age/race/sex), including in the states largest county, Los Angeles.
+In recent years, given the pandemic of COVID-19, vaccination rates against the virus have risen since the introduction of COVID-19 vaccines at the end of calendar year 2020. This is true for the state of California, where vaccination data across all of the state's 58 counties (stratified by age) can be used for infectious diseases surveillance by the California Department of Public Health. Specifically, analysis of the aforementioned data could reveal if COVID-19 vaccination rates have any impact on flu vaccination rates/cases and severity. This can be done by examining data for flu cases and severity across the entire state stratified by demographic categories (age/race/sex), including in the states largest county, Los Angeles.
 
 ## Methods
 
 The three aforementioned data sources used as the basis for this analysis between COVID-19 vaccination rates and those for the flu are the following: weekly data for flu cases and severity by demographic (age/race/sex) categories across all California counties except Los Angeles (sim_flu_CA.csv), similar data as sim_flu_CA.csv except just for Los Angeles County (sim_flu_LACounty.csv), and quarterly COVID-19 vaccination data by age for all of California's 58 counties (ca_vax_rates_quarter.csv). Both the sim_flu_CA.csv and sim_flu_LACounty.csv span the entirety of calendar year 2022 and calendar year 2023. ca_vax_rates_quarter.csv includes that and starts as far back as the third quarter of calendar year 2020. All three of these were read in to begin the data analysis process.
 
-Both of the flu datasets were then cleaned in order to facilitate a final merger. This was done by renaming the columns to a snakecase format, standardizing the column names themselves (sim_flu_LACounty.csv columns were renamed and a column was added to match sim_flu_CA.csv). The data types and associated formatting were then standardized (like for date values). Both datasets were then merged once they were fully aligned/ready. This combined dataset was then subset to include only data for Alameda County and age, the characteristics of interest for data analysis. This combined dataset was then summarized into mean and cumulative columns, using the mean() and last() functions, respectively.
+Both of the flu datasets were then cleaned in order to facilitate a final merger. This was done by renaming the columns to a snakecase format, standardizing the column names themselves. The data types and associated formatting were then standardized (like for date values). Both datasets were then merged once they were fully aligned/ready. This combined flu dataset was then subset to include only data for Alameda County and age, the characteristics of interest for data analysis. This combined flu dataset was then summarized into mean and cumulative columns, using the mean() and last() functions, respectively.
 
-The COVID-19 vaccination data was then cleaned in order facilitate eventually joining it with the flu morbidity data. The columns were renamed to a snakecase format, subset to include data from the second quarter of calendar year 2023 only, and then further subset to include only data for Alameda County and age, and subset a final time to account for only one stratification of age (merging three ranges within 0-17 to just 0-17) into a single row (summary() function). The vaccination rate was then calculated in a separate column. After this, the dataset was combined with the flu morbidity dataset, and there was some minor column renaming/arrangement after. Descriptive statistics of this combined dataset were generated and presented in table format.
+The COVID-19 vaccination data was then cleaned in order facilitate eventually joining it with the flu morbidity data. The columns were renamed to a snakecase format, subset to include data from the second quarter of calendar year 2023 only, and then further subset to include only data for Alameda County and age, and subset a final time to account for only one stratification of age in a single row (summary() function). The vaccination rate was then calculated in a separate column. After this, the dataset was combined with the flu morbidity dataset, and there was some minor column renaming/arrangement after. Descriptive statistics of this combined total dataset were generated and presented in table format.
 
-Prior to the generation of data visualizations, the only minor data cleaning that was done to the combined dataset was removing a column and renaming another in order to make the process easier. A scatterplot was created to examine the association between the total number of severe flu cases and the COVID-19 vaccination rate by age categories in Alameda County during the second quarter of calendar year 2023. Then, a table was made showing a variety of statistics pertaining to influenza (flu) cases and COVID-19 vaccination in Alameda County in the second quarter of calendar year 2023. These visualizations represent the main results from the combined dataset.
+Prior to the generation of data visualizations, the minor data cleaning that was done to the combined total dataset was removing a column and renaming another in order to facilitate the process. A scatterplot was created to examine the association between the total number of severe flu cases and the COVID-19 vaccination rate by age categories in Alameda County during the second quarter of calendar year 2023. The combined total dataset was then consolidated (subset) to include fewer columns in order to make an eventual table more presentable. Then, a table was made showing a variety of statistics pertaining to flu cases and COVID-19 vaccination in Alameda County in the second quarter of calendar year 2023.
 
-## Results 
+## Results
 
-Table 1 provides a comprehensive overview of influenza cases and COVID-19 vaccination data in Alameda County during the second quarter of 2023. The table is organized by age categories, ranging from 0-17 to 65+, and includes various key metrics. In terms of influenza cases, mean statistics, cumulative values, and severe cases are outlined for each age category. Notably, as age increases, there is a visible rise in severe influenza cases, signaling potential challenges in managing the impact of the virus among older populations.
+Table 1 provides a comprehensive overview of flu cases and COVID-19 vaccination data in Alameda County during the second quarter of 2023. The table is organized by age categories, ranging from 0-17 to 65+, and includes various key metrics. In terms of flu cases, mean statistics, cumulative values, and severe cases are outlined for each age category. Notably, as age increases, there is a visible rise in severe flu cases.
 
-Shifting focus to COVID-19 vaccination, the table encapsulates key information such as the total population, estimated population, and vaccination coverage metrics. Vaccination rates demonstrate an increasing trend with age, highlighting successful efforts in vaccinating older demographics. However, the table also points to the persistence of unvaccinated individuals, emphasizing the need for continued vaccination outreach.
+Shifting focus to COVID-19 vaccination, the table encapsulates key information such as the total population, estimated population, and vaccination coverage metrics. Vaccination rates demonstrate an increasing trend with age, highlighting successful efforts in vaccinating older demographics. However, the table also points to the persistence of unvaccinated individuals.
 
 ```{r, include = FALSE, warning=FALSE, message=FALSE}
 
-# First we are adding all the packages that are needed to create the visualizations and importing the final dataset.
+# We are first adding all the packages that are needed to create the visualizations and importing the final dataset.
 
 library(readr)
 library(tidyverse)
@@ -41,7 +41,7 @@ library(ggplot2)
 
 ```{r warning=FALSE, include = FALSE, message=FALSE}
 
-# In the below code chunk we are importing the three datasets provided for this scenario. For datasets in a .csv format we are using the read_csv() command from the readr package.
+# We are importing the three datasets provided for this scenario in the below code chunk. We are using the read_csv() command from the readr package for the datasets in .csv format.
 
 final_data <- read_csv("./Final_aggregated_data_Milestone4.csv")
 
@@ -55,7 +55,7 @@ final_data_renamed <- rename_with(final_data,
 
 print(final_data_renamed)
 
-# We are using print() command throughout this document because our dataset only has 4 rows. 
+# We are using print() command throughout this document because our dataset only has four rows.
 ```
 
 ```{r, warning=FALSE, include = FALSE, message=FALSE}
@@ -71,8 +71,11 @@ print(final_clean_data)
 
 ```{r, warning=FALSE, message=FALSE, echo = FALSE}
 
+# Consolidating the final dataset to make the kable more presentable
+consolidated_final_data <- select(final_clean_data, -2, -3, -4, -6, -8, -11, -13, -14, -16, -17, -18, -19, -20)
+
 # Making a kable
-new_kable <- kable(final_clean_data, format = "markdown", caption = " Influenza Cases and COVID-19 Vaccination Data from Alameda County Second Quarter 2023", align = "c", booktabs = TRUE) %>%
+new_kable <- kable(consolidated_final_data, format = "markdown", caption = " Flu Cases and COVID-19 Vaccination Data from Alameda County Second Quarter 2023", align = "c", booktabs = TRUE) %>%
   kable_styling(latex_options = c("striped", "hold_position"), full_width = FALSE)
 
 # Adding a footnote as a description
@@ -85,9 +88,9 @@ add_footnote(
 ```
 
 \
-Figure 1 shows a scatterplot that visually explores the relationship between cumulative severe flu cases and COVID-19 vaccination rates across various age categories in Alameda County for the second quarter of 2023. Each point on the plot corresponds to a specific age group, with the x-axis representing cumulative severe flu cases and the y-axis indicating COVID-19 vaccination rates. The color coding distinguishes between different age categories.
+Figure 1 shows a scatterplot that visually explores the relationship between cumulative severe flu cases and COVID-19 vaccination rates across various age categories in Alameda County for the second quarter of calendar year 2023. Each point on the plot corresponds to a specific age group, with the x-axis representing cumulative severe flu cases and the y-axis indicating COVID-19 vaccination rates. The color coding distinguishes between different age categories.
 
-The analysis of age and flu severity reveals a correlation, with the "0-17" age group showing the lowest severe flu cases. Simultaneously, the plot highlights a positive association between age and COVID-19 vaccination rates, with the "0-17" age category displaying the lowest vaccination rate. As age increases, both severe flu cases and vaccination rates tend to rise, suggesting a potential pattern of older age groups experiencing more severe flu cases. Notably, the "65+" age category exhibits the highest severe flu cases, emphasizing the vulnerability of individuals aged 65 and older to severe flu. Despite the elevated risk, this age group demonstrates a higher COVID-19 vaccination rate.
+The analysis of age and flu severity reveals a correlation, with the "0-17" age group showing the lowest severe flu cases. Simultaneously, the plot highlights a positive association between age and COVID-19 vaccination rates, with the "0-17" age category displaying the lowest vaccination rate. As age increases, both severe flu cases and vaccination rates tend to rise. Notably, the "65+" age category exhibits the highest severe flu cases. Despite the elevated risk, this age group demonstrates a higher COVID-19 vaccination rate.
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
@@ -103,31 +106,14 @@ ggplot(final_clean_data, aes(x = `CUMULATIVE SEVERE`, y = `VACCINATION RATE`, co
        x = "Cumulative Severe Flu Cases",
        y = "Vaccination Rate",
        caption = "Figure 1: This plot shows the cumulative number of severe flu cases and the COVID-19 vaccination rates across 
-different age categories in Alameda county during the second quarter of 2023. The plot shows that as age increases
+different age categories in Alameda county during the second quarter of 2023. The plot shows that as age increases 
 the total number of severe flu cases and the COVID-19 vaccination rate increased as well.") +
   theme_minimal() + theme(axis.line = element_line(size = 0.5),
                           plot.caption = element_text(hjust = 0))
-
 ```
 
-## Discussion 
-
-The comprehensive analysis presented in Table 1 sheds light on the intricate relationship between influenza cases and COVID-19 vaccination dynamics in Alameda County during the second quarter of 2023. The organized breakdown by age categories provides valuable insights into the nuanced challenges and successes in public health efforts.
-
-### **Influenza Cases**
-
-The observed increase in severe influenza cases with advancing age underscores the vulnerability of older populations to the impact of the virus. This finding aligns with existing knowledge on the heightened susceptibility of elderly individuals to severe respiratory infections. The data highlights a crucial public health concern, emphasizing the need for targeted interventions and preventive measures to address the specific health risks faced by older age groups.
-
-### **COVID-19 Vaccination**
-
-The upward trend in vaccination rates with increasing age is a positive indicator of successful efforts in immunizing older demographics against COVID-19. However, the persistence of unvaccinated individuals, as indicated in the table, signals an ongoing challenge. Continued vaccination outreach remains imperative to achieve broader community immunity and mitigate the potential for disease spread, particularly among those who have not yet received the vaccine.
+## Discussion
 
 ### **Relationship Between Age, Flu Severity, and Vaccination Rates**
 
-Figure 1 visually represents the complex interplay between cumulative severe flu cases and COVID-19 vaccination rates across age categories. The correlation observed between age and flu severity, with the "0-17" age group exhibiting the lowest severe flu cases, aligns with expectations. Simultaneously, the positive association between age and COVID-19 vaccination rates suggests an encouraging trend in prioritizing older age groups for vaccination.
-
-As age increases, both severe flu cases and vaccination rates tend to rise, revealing a potential pattern. The heightened severe flu cases in the "65+" age category highlight the susceptibility of individuals aged 65 and older to severe flu, emphasizing the critical need for tailored health interventions for this vulnerable demographic.
-
-Despite the elevated risk in the older age group, the higher COVID-19 vaccination rate indicates a proactive response to mitigate health risks. This positive correlation underscores the awareness and understanding among older individuals of the benefits of COVID-19 vaccination in reducing the severity of respiratory infections. In summary, the combined analysis of Table 1 and Figure 1 provides a comprehensive understanding of the age-specific dynamics of influenza cases and COVID-19 vaccination in Alameda County.
-
-The insights gleaned from the analysis of influenza cases and COVID-19 vaccination data in Alameda County during the second quarter of 2023 carry important implications for future public health initiatives. The positive correlation between age and COVID-19 vaccination rates suggests a successful prioritization of older demographics, paving the way for targeted vaccination campaigns in these age groups. However, the persistence of unvaccinated individuals, particularly in younger categories, calls for continued outreach efforts to address potential vaccine hesitancy. The vulnerability of older populations to severe flu cases emphasizes the ongoing importance of vaccination efforts for this demographic. Looking forward, public health interventions should be adaptive, considering age-specific nuances and leveraging the data to refine strategies. These findings contribute to the groundwork for preparing healthcare systems for seasonal variations and underscore the need for research into age-related health disparities, ensuring that future interventions are both effective and equitable.
+The insights gleaned from the analysis of flu cases and COVID-19 vaccination data in Alameda County during the second quarter of calendar year 2023 carry important implications for future public health initiatives. The positive correlation between age and COVID-19 vaccination rates suggests a successful prioritization of older demographics. This finding aligns with existing knowledge on the heightened susceptibility of elderly individuals to severe respiratory infections, paving the way for targeted vaccination campaigns in these age groups. However, the persistence of unvaccinated individuals, particularly in younger categories, calls for continued outreach efforts to address potential vaccine hesitancy. The vulnerability of older populations to severe flu cases emphasizes the ongoing importance of vaccination efforts for this demographic. Looking forward, public health interventions should be adaptive, consider age-specific nuances, and leverage data to refine strategies. These findings contribute to the groundwork for preparing healthcare systems for seasonal variations in infectious diseases prevalence/incidence and underscore the need for research into age-related health disparities, ensuring that future interventions are both effective and equitable.
