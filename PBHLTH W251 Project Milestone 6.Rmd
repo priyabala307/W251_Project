@@ -5,7 +5,7 @@ date: "2023-12-10"
 output: html_document
 ---
 
-#  Age-Specific Dynamics of Flu Cases and COVID-19 Vaccination in Alameda County
+# Age-Specific Dynamics of Flu Cases and COVID-19 Vaccination in Alameda County
 
 ## Problem Statement
 
@@ -23,7 +23,7 @@ Prior to the generation of data visualizations, the minor data cleaning that was
 
 ## Results
 
-Table 1 provides a comprehensive overview of flu cases and COVID-19 vaccination data in Alameda County during the second quarter of 2023. The table is organized by age categories, ranging from 0-17 to 65+, and includes various key metrics. In terms of flu cases, mean statistics, cumulative values, and severe cases are outlined for each age category. Notably, as age increases, there is a visible rise in severe flu cases.
+Table 1 provides a comprehensive overview of flu cases and COVID-19 vaccination data in Alameda County during the second quarter of 2023. The table is organized by age categories, ranging from 0-17 to 65+, and includes various key metrics. In terms of flu cases, mean statistics, cumulative values, and severe cases are outlined for each age category. Notably, as age increases, there is a visible rise in severe flu cases, shown by the mean new severe column.
 
 Shifting focus to COVID-19 vaccination, the table encapsulates key information such as the total population, estimated population, and vaccination coverage metrics. Vaccination rates demonstrate an increasing trend with age, highlighting successful efforts in vaccinating older demographics. However, the table also points to the persistence of unvaccinated individuals.
 
